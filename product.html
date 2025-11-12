@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Produit - Crispin La Boutique</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header avec navigation -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>CRISPIN<span class="logo-accent">LA BOUTIQUE</span></h1>
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="index.html#accueil">Accueil</a></li>
+                        <li><a href="index.html#produits">Produits</a></li>
+                        <li><a href="index.html#categories">Catégories</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="search-btn" id="searchBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                    <button class="cart-btn" id="cartBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M9 2L7 6h10l-2-4H9z"></path>
+                            <path d="M7 6h10l1 14H6L7 6z"></path>
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="15" cy="21" r="1"></circle>
+                        </svg>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Accueil</a>
+            <span class="separator">›</span>
+            <a href="index.html#produits">Produits</a>
+            <span class="separator">›</span>
+            <span id="breadcrumbCategory">Catégorie</span>
+            <span class="separator">›</span>
+            <span id="breadcrumbProduct">Produit</span>
+        </div>
+    </div>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail">
+        <div class="container">
+            <div class="product-detail-grid">
+                <!-- Product Images -->
+                <div class="product-images">
+                    <div class="main-image">
+                        <div class="image-container" id="mainImage">
+                            <!-- Image principale -->
+                        </div>
+                        <div class="image-badge" id="productBadge"></div>
+                    </div>
+                    <div class="thumbnail-images" id="thumbnails">
+                        <!-- Miniatures -->
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info-detail">
+                    <div class="product-category-tag" id="categoryTag"></div>
+                    <h1 class="product-title" id="productTitle"></h1>
+                    <div class="product-rating">
+                        <div class="stars">★★★★★</div>
+                        <span class="rating-count">(127 avis)</span>
+                    </div>
+                    <p class="product-description-full" id="productDescription"></p>
+
+                    <div class="product-price-section">
+                        <div class="price-main">
+                            <span class="price-amount" id="productPrice"></span>
+                            <span class="price-unit" id="priceUnit"></span>
+                        </div>
+                        <div class="price-info">TVA incluse • Livraison offerte dès 200€</div>
+                    </div>
+
+                    <div class="product-options">
+                        <div class="quantity-selector">
+                            <label>Quantité</label>
+                            <div class="quantity-controls">
+                                <button class="qty-btn" onclick="updateDetailQuantity(-1)">-</button>
+                                <input type="number" id="quantityInput" value="1" min="1">
+                                <button class="qty-btn" onclick="updateDetailQuantity(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-actions">
+                        <button class="btn btn-primary btn-large" onclick="addToCartFromDetail()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="margin-right: 8px;">
+                                <path d="M9 2L7 6h10l-2-4H9z"></path>
+                                <path d="M7 6h10l1 14H6L7 6z"></path>
+                            </svg>
+                            Ajouter au panier
+                        </button>
+                        <button class="btn btn-secondary btn-large" onclick="buyNow()">
+                            Acheter maintenant
+                        </button>
+                    </div>
+
+                    <div class="product-features">
+                        <div class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span>Service client expert</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="1" y="3" width="15" height="13"></rect>
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                            </svg>
+                            <span>Livraison 24h</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span>Garantie qualité</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span>Stock disponible</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Tabs -->
+            <div class="product-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="description">Description détaillée</button>
+                    <button class="tab-btn" data-tab="specs">Caractéristiques</button>
+                    <button class="tab-btn" data-tab="usage">Utilisation</button>
+                    <button class="tab-btn" data-tab="reviews">Avis clients</button>
+                </div>
+                <div class="tabs-content">
+                    <div class="tab-pane active" id="description">
+                        <h3>Description du produit</h3>
+                        <p id="fullDescription"></p>
+                        <div class="description-features">
+                            <h4>Points forts :</h4>
+                            <ul>
+                                <li>Qualité professionnelle certifiée</li>
+                                <li>Performance optimale dans toutes conditions</li>
+                                <li>Durabilité exceptionnelle</li>
+                                <li>Facilité d'application</li>
+                                <li>Compatible avec de nombreux supports</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="specs">
+                        <h3>Caractéristiques techniques</h3>
+                        <table class="specs-table">
+                            <tr>
+                                <td><strong>Référence</strong></td>
+                                <td id="specRef"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Catégorie</strong></td>
+                                <td id="specCategory"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Conditionnement</strong></td>
+                                <td id="specPackaging"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Origine</strong></td>
+                                <td>France / Europe</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Garantie</strong></td>
+                                <td>2 ans fabricant</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="usage">
+                        <h3>Mode d'utilisation</h3>
+                        <div class="usage-steps">
+                            <div class="usage-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Préparation</h4>
+                                    <p>Assurez-vous que les surfaces à traiter sont propres, sèches et dégraissées.</p>
+                                </div>
+                            </div>
+                            <div class="usage-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Application</h4>
+                                    <p>Appliquez le produit uniformément selon les recommandations spécifiques.</p>
+                                </div>
+                            </div>
+                            <div class="usage-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Séchage</h4>
+                                    <p>Respectez le temps de séchage indiqué pour une efficacité optimale.</p>
+                                </div>
+                            </div>
+                            <div class="usage-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Finition</h4>
+                                    <p>Vérifiez le résultat et appliquez une seconde couche si nécessaire.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usage-warning">
+                            <strong>⚠️ Précautions :</strong> Consultez la fiche de sécurité. Tenir hors de portée des enfants. Utilisez dans un espace ventilé.
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="reviews">
+                        <h3>Avis clients</h3>
+                        <div class="reviews-summary">
+                            <div class="rating-overview">
+                                <div class="rating-score">4.8</div>
+                                <div class="rating-stars">★★★★★</div>
+                                <div class="rating-count">127 avis</div>
+                            </div>
+                            <div class="rating-bars">
+                                <div class="rating-bar">
+                                    <span>5★</span>
+                                    <div class="bar"><div class="fill" style="width: 85%"></div></div>
+                                    <span>108</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>4★</span>
+                                    <div class="bar"><div class="fill" style="width: 10%"></div></div>
+                                    <span>13</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>3★</span>
+                                    <div class="bar"><div class="fill" style="width: 3%"></div></div>
+                                    <span>4</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>2★</span>
+                                    <div class="bar"><div class="fill" style="width: 1%"></div></div>
+                                    <span>1</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>1★</span>
+                                    <div class="bar"><div class="fill" style="width: 1%"></div></div>
+                                    <span>1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reviews-list">
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="review-author">
+                                        <strong>Pierre M.</strong>
+                                        <span class="review-date">Il y a 2 jours</span>
+                                    </div>
+                                    <div class="review-stars">★★★★★</div>
+                                </div>
+                                <p class="review-text">Excellent produit, conforme à mes attentes. Livraison rapide et emballage soigné.</p>
+                            </div>
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="review-author">
+                                        <strong>Sophie L.</strong>
+                                        <span class="review-date">Il y a 1 semaine</span>
+                                    </div>
+                                    <div class="review-stars">★★★★★</div>
+                                </div>
+                                <p class="review-text">Je recommande ! Qualité professionnelle à un prix raisonnable. Je recommanderai chez Crispin.</p>
+                            </div>
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="review-author">
+                                        <strong>Marc D.</strong>
+                                        <span class="review-date">Il y a 2 semaines</span>
+                                    </div>
+                                    <div class="review-stars">★★★★★</div>
+                                </div>
+                                <p class="review-text">Très bon rapport qualité/prix. Le produit répond parfaitement à mes besoins professionnels.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="related-products">
+                <h2 class="section-title">Produits similaires</h2>
+                <div class="products-grid" id="relatedProducts">
+                    <!-- Généré dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CRISPIN<span class="logo-accent">LA BOUTIQUE</span></h3>
+                    <p>60 ans d'expertise en solutions adhésives et produits professionnels</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html#accueil">Accueil</a></li>
+                        <li><a href="index.html#produits">Produits</a></li>
+                        <li><a href="index.html#categories">Catégories</a></li>
+                        <li><a href="https://www.crispin-industrie.com/">Site vitrine</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="#">Conditions générales</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">Livraison</a></li>
+                        <li><a href="#">Retours</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Une question ? Contactez-nous</p>
+                    <a href="mailto:contact@crispin-industrie.com" class="btn btn-primary">Nous écrire</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Crispin Industrie - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Panier Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Votre panier</h3>
+                <button class="modal-close" id="closeCart">&times;</button>
+            </div>
+            <div class="modal-body" id="cartItems">
+                <p class="empty-cart">Votre panier est vide</p>
+            </div>
+            <div class="modal-footer">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span class="total-amount" id="cartTotal">0,00 €</span>
+                </div>
+                <button class="btn btn-primary btn-block">Commander</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="product.js"></script>
+</body>
+</html>
