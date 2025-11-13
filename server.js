@@ -389,6 +389,64 @@ app.put('/api/orders/:orderId/status', async (req, res) => {
 });
 
 // =======================
+// ADMIN ROUTES
+// =======================
+
+// Get all users (admin only - for now no authentication)
+app.get('/api/admin/users', async (req, res) => {
+    try {
+        const users = await readJSON(USERS_FILE);
+
+        // Remove passwords before sending
+        const safeUsers = users.map(user => {
+            const { password, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+        });
+
+        res.json({
+            success: true,
+            count: safeUsers.length,
+            users: safeUsers
+        });
+
+    } catch (error) {
+        console.error('Get users error:', error);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
+// Get all data (backup endpoint)
+app.get('/api/admin/backup', async (req, res) => {
+    try {
+        const users = await readJSON(USERS_FILE);
+        const conversations = await readJSON(AI_CONVERSATIONS_FILE);
+        const orders = await readJSON(ORDERS_FILE);
+
+        // Remove passwords
+        const safeUsers = users.map(({ password, ...user }) => user);
+
+        res.json({
+            success: true,
+            timestamp: Date.now(),
+            data: {
+                users: safeUsers,
+                conversations: conversations,
+                orders: orders
+            },
+            stats: {
+                totalUsers: users.length,
+                totalConversations: conversations.length,
+                totalOrders: orders.length
+            }
+        });
+
+    } catch (error) {
+        console.error('Backup error:', error);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
+// =======================
 // SERVER START
 // =======================
 
