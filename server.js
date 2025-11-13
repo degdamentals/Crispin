@@ -389,6 +389,69 @@ app.put('/api/orders/:orderId/status', async (req, res) => {
 });
 
 // =======================
+// USER MANAGEMENT ROUTES
+// =======================
+
+// Delete user account (RGPD compliance)
+app.delete('/api/user/delete', async (req, res) => {
+    try {
+        const { userId } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({ error: 'User ID requis' });
+        }
+
+        // Read all data files
+        const users = await readJSON(USERS_FILE);
+        const conversations = await readJSON(AI_CONVERSATIONS_FILE);
+        const orders = await readJSON(ORDERS_FILE);
+
+        // Find user
+        const userIndex = users.findIndex(u => u.id === userId);
+        if (userIndex === -1) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé' });
+        }
+
+        const deletedUser = users[userIndex];
+
+        // Remove user data (RGPD compliant deletion)
+        users.splice(userIndex, 1);
+
+        // Remove all conversations from this user
+        const filteredConversations = conversations.filter(c => c.userId !== userId);
+        const deletedConversationsCount = conversations.length - filteredConversations.length;
+
+        // Remove all orders from this user
+        const filteredOrders = orders.filter(o => o.userId !== userId);
+        const deletedOrdersCount = orders.length - filteredOrders.length;
+
+        // Save updated data
+        await writeJSON(USERS_FILE, users);
+        await writeJSON(AI_CONVERSATIONS_FILE, filteredConversations);
+        await writeJSON(ORDERS_FILE, filteredOrders);
+
+        console.log(`🗑️ RGPD Deletion - User: ${deletedUser.email}`);
+        console.log(`   - User account: ✅ Deleted`);
+        console.log(`   - Conversations: ${deletedConversationsCount} deleted`);
+        console.log(`   - Orders: ${deletedOrdersCount} deleted`);
+
+        res.json({
+            success: true,
+            message: 'Compte et données supprimés conformément au RGPD',
+            deleted: {
+                user: true,
+                conversations: deletedConversationsCount,
+                orders: deletedOrdersCount
+            }
+        });
+
+    } catch (error) {
+        console.error('Delete user error:', error);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
+// =======================
 // ADMIN ROUTES
 // =======================
 

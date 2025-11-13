@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte | Crispin La Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .account-container {
+            max-width: 800px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        .account-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .account-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .account-header p {
+            color: var(--gray-dark);
+        }
+
+        .account-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .account-card h2 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .account-info {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--gray-light);
+            border-radius: var(--radius-sm);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .info-value {
+            color: var(--gray-dark);
+        }
+
+        .danger-zone {
+            border: 2px solid #ef4444;
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            background: #fef2f2;
+        }
+
+        .danger-zone h3 {
+            color: #dc2626;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .danger-zone p {
+            color: #991b1b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-medium);
+            color: var(--secondary);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-dark);
+            color: white;
+        }
+
+        .rgpd-info {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .rgpd-info h4 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .rgpd-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rgpd-info li {
+            padding: 0.5rem 0;
+            color: #1e40af;
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+        }
+
+        .rgpd-info li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content-custom {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content-custom h3 {
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content-custom p {
+            margin-bottom: 2rem;
+            color: var(--gray-dark);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .account-container {
+                margin-top: 100px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .modal-actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/logo.svg" alt="Crispin La Boutique" style="height: 50px; width: auto;">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="index.html#accueil">Accueil</a></li>
+                        <li><a href="index.html#produits">Produits</a></li>
+                        <li><a href="cart.html">Panier</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <a href="index.html" class="btn-secondary">← Retour</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Account Container -->
+    <div class="account-container">
+        <div class="account-header">
+            <h1>Mon Compte</h1>
+            <p>Gérez vos informations personnelles et vos préférences</p>
+        </div>
+
+        <!-- Account Info Card -->
+        <div class="account-card">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Informations Personnelles
+            </h2>
+            <div class="account-info" id="accountInfo">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- RGPD Info -->
+        <div class="rgpd-info">
+            <h4>🛡️ Vos Droits RGPD</h4>
+            <ul>
+                <li>Vous avez le droit d'accéder à vos données personnelles</li>
+                <li>Vous pouvez demander la rectification de vos informations</li>
+                <li>Vous pouvez supprimer votre compte et toutes vos données à tout moment</li>
+                <li>Vos données sont stockées de manière sécurisée et ne sont jamais partagées avec des tiers</li>
+            </ul>
+        </div>
+
+        <!-- Danger Zone Card -->
+        <div class="account-card">
+            <div class="danger-zone">
+                <h3>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    Zone Dangereuse
+                </h3>
+                <p>
+                    <strong>Attention :</strong> Cette action est irréversible. En supprimant votre compte, vous supprimez définitivement :
+                </p>
+                <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem; color: #991b1b;">
+                    <li>Vos informations personnelles (nom, prénom, email)</li>
+                    <li>Toutes vos conversations avec l'assistant IA</li>
+                    <li>Votre historique de commandes</li>
+                    <li>Toutes les données associées à votre compte</li>
+                </ul>
+                <p style="margin-bottom: 1.5rem;">
+                    Conformément au RGPD (Règlement Général sur la Protection des Données), vos données seront supprimées dans un délai de 48 heures maximum.
+                </p>
+                <button class="btn-danger" onclick="confirmDeleteAccount()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Supprimer mon compte et mes données
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-content-custom">
+            <h3>⚠️ Confirmer la suppression</h3>
+            <p>Êtes-vous absolument sûr(e) de vouloir supprimer votre compte ?<br><br>
+            Cette action est <strong>définitive et irréversible</strong>.</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeDeleteModal()">Annuler</button>
+                <button class="btn-danger" onclick="deleteAccount()">Oui, supprimer définitivement</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Check if user is logged in
+        const user = JSON.parse(localStorage.getItem('crispinUser') || '{}');
+        const token = localStorage.getItem('crispinToken');
+
+        if (!user.id || !token) {
+            // Redirect to login if not logged in
+            window.location.href = 'login.html';
+        }
+
+        // Display account info
+        function displayAccountInfo() {
+            const accountInfo = document.getElementById('accountInfo');
+
+            accountInfo.innerHTML = `
+                <div class="info-row">
+                    <span class="info-label">Prénom</span>
+                    <span class="info-value">${user.firstName}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Nom</span>
+                    <span class="info-value">${user.lastName}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">${user.email}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ID Utilisateur</span>
+                    <span class="info-value">${user.id}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Membre depuis</span>
+                    <span class="info-value">${new Date(user.createdAt).toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })}</span>
+                </div>
+            `;
+        }
+
+        // Confirm delete account
+        function confirmDeleteAccount() {
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        // Close delete modal
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        // Delete account
+        async function deleteAccount() {
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/user/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ userId: user.id })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Clear local storage
+                    localStorage.removeItem('crispinUser');
+                    localStorage.removeItem('crispinToken');
+                    localStorage.removeItem('crispinCart');
+                    localStorage.removeItem('aiLearningData');
+
+                    // Show success message
+                    alert('✅ Votre compte et toutes vos données ont été supprimés avec succès.\n\nConformément au RGPD, toutes vos informations personnelles ont été effacées de nos serveurs.\n\nNous espérons vous revoir bientôt !');
+
+                    // Redirect to home
+                    window.location.href = 'index.html';
+                } else {
+                    throw new Error(data.error || 'Erreur lors de la suppression');
+                }
+
+            } catch (error) {
+                console.error('Delete account error:', error);
+                alert('❌ Erreur lors de la suppression du compte. Veuillez réessayer ou nous contacter.');
+                closeDeleteModal();
+            }
+        }
+
+        // Initialize
+        displayAccountInfo();
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDeleteModal();
+            }
+        });
+
+        // Close modal on overlay click
+        document.getElementById('deleteModal').addEventListener('click', (e) => {
+            if (e.target.id === 'deleteModal') {
+                closeDeleteModal();
+            }
+        });
+    </script>
+</body>
+</html>

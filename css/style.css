@@ -214,6 +214,128 @@ body::before {
 .header-actions {
     display: flex;
     gap: var(--spacing-sm);
+    align-items: center;
+}
+
+/* User Menu Styles */
+.user-menu {
+    position: relative;
+}
+
+.user-account-btn,
+.login-btn {
+    background: var(--gray-light);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+    color: var(--secondary);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.user-account-btn:hover,
+.login-btn:hover {
+    background: var(--primary);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.user-account-btn .chevron {
+    transition: transform 0.3s ease;
+}
+
+.user-account-btn:hover .chevron {
+    transform: rotate(180deg);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    min-width: 280px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.user-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown-header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.user-info {
+    flex: 1;
+    color: white;
+}
+
+.user-fullname {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.user-email {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.user-dropdown-divider {
+    height: 1px;
+    background: var(--gray-medium);
+    margin: 0.5rem 0;
+}
+
+.user-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.user-dropdown-item:hover {
+    background: var(--gray-light);
+    color: var(--primary);
+}
+
+.user-dropdown-item:last-child {
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 
 .search-btn,
