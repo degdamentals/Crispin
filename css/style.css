@@ -1512,6 +1512,11 @@ body::before {
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
+
+    /* Ralentir l'animation du bandeau en mobile */
+    .announcement-content {
+        animation: scroll 50s linear infinite;
+    }
 }
 
 @media (max-width: 480px) {

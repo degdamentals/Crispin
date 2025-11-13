@@ -310,7 +310,13 @@ function createProductCard(product) {
         </div>
     `;
 
-    // Attacher l'événement au bouton "Ajouter"
+    // Clic sur la carte entière = aller vers la page produit
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+        window.location.href = `products/product-template.html?id=${product.id}`;
+    });
+
+    // Attacher l'événement au bouton "Ajouter" (empêcher la propagation)
     const addButton = card.querySelector('.add-to-cart');
     addButton.addEventListener('click', (e) => {
         e.stopPropagation();

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produit - Crispin La Boutique</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/product-page.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="../index.html" class="logo">
+                    <span class="logo-text">CRISPIN</span>
+                    <span class="logo-subtitle">La Boutique</span>
+                </a>
+
+                <nav class="nav">
+                    <a href="../index.html#accueil">Accueil</a>
+                    <a href="../index.html#produits">Produits</a>
+                    <a href="../index.html#contact">Contact</a>
+                </nav>
+
+                <div class="header-actions">
+                    <!-- User Account Button -->
+                    <div class="user-menu" id="userMenu">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Cart Button -->
+                    <button class="cart-btn" id="cartBtn" aria-label="Panier">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../index.html">Accueil</a>
+            <span>/</span>
+            <a href="../index.html#produits">Produits</a>
+            <span>/</span>
+            <span id="breadcrumbCategory">Catégorie</span>
+            <span>/</span>
+            <span id="breadcrumbProduct">Produit</span>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL -->
+    <section class="product-detail-section">
+        <div class="container">
+            <div class="product-detail-grid">
+                <!-- Product Images -->
+                <div class="product-images">
+                    <div class="main-image">
+                        <img id="mainProductImage" src="" alt="" onerror="this.src='https://via.placeholder.com/600x600/FC4C02/FFFFFF?text=Produit'">
+                        <span class="product-badge-large" id="productBadge"></span>
+                    </div>
+                    <div class="image-thumbnails" id="imageThumbnails">
+                        <!-- Thumbnails will be added here -->
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info-main">
+                    <div class="product-category-tag" id="productCategory"></div>
+                    <h1 class="product-title" id="productTitle"></h1>
+
+                    <div class="product-rating">
+                        <div class="stars">
+                            ★★★★★
+                        </div>
+                        <span class="rating-count">(127 avis)</span>
+                    </div>
+
+                    <div class="product-price-box">
+                        <div class="price-main">
+                            <span class="current-price" id="productPrice"></span>
+                            <span class="price-unit" id="productUnit"></span>
+                        </div>
+                        <div class="stock-status">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            En stock
+                        </div>
+                    </div>
+
+                    <div class="product-description" id="productDescription"></div>
+
+                    <div class="product-features" id="productFeatures">
+                        <!-- Features will be populated -->
+                    </div>
+
+                    <div class="product-actions">
+                        <div class="quantity-selector">
+                            <button class="qty-btn" id="qtyMinus">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                            <input type="number" id="quantity" value="1" min="1" max="999">
+                            <button class="qty-btn" id="qtyPlus">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <button class="btn btn-primary btn-add-cart" id="addToCartBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            Ajouter au panier
+                        </button>
+                    </div>
+
+                    <div class="product-meta">
+                        <div class="meta-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            </svg>
+                            <span>Livraison gratuite dès 200€</span>
+                        </div>
+                        <div class="meta-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span>Garantie qualité professionnelle</span>
+                        </div>
+                        <div class="meta-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span>Expédition sous 24-48h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Tabs -->
+            <div class="product-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="description">Description détaillée</button>
+                    <button class="tab-btn" data-tab="specs">Caractéristiques</button>
+                    <button class="tab-btn" data-tab="reviews">Avis clients</button>
+                </div>
+
+                <div class="tabs-content">
+                    <div class="tab-panel active" id="tab-description">
+                        <div class="detail-content" id="detailDescription">
+                            <!-- Detailed description -->
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" id="tab-specs">
+                        <div class="specs-grid" id="specsGrid">
+                            <!-- Specifications -->
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" id="tab-reviews">
+                        <div class="reviews-summary">
+                            <div class="rating-overview">
+                                <div class="rating-score">4.8</div>
+                                <div class="rating-stars">★★★★★</div>
+                                <div class="rating-text">127 avis clients</div>
+                            </div>
+                        </div>
+                        <div class="reviews-list" id="reviewsList">
+                            <!-- Reviews will be populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="related-products">
+                <h2 class="section-title">Produits similaires</h2>
+                <div class="products-grid" id="relatedProducts">
+                    <!-- Related products will be populated -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>CRISPIN La Boutique</h3>
+                    <p>Votre partenaire en fournitures industrielles</p>
+                </div>
+                <div class="footer-links">
+                    <a href="../index.html#contact">Contact</a>
+                    <a href="../index.html#produits">Produits</a>
+                    <a href="#">Mentions légales</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Crispin La Boutique. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/user-menu.js"></script>
+    <script src="../js/product-page.js"></script>
+</body>
+</html>
