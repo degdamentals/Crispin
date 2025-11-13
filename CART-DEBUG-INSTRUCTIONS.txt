@@ -1,0 +1,167 @@
+═══════════════════════════════════════════════════════════════
+🛒 INSTRUCTIONS DE DÉBOGAGE DU PANIER - Crispin La Boutique
+═══════════════════════════════════════════════════════════════
+
+📋 RÉSUMÉ DES CHANGEMENTS EFFECTUÉS
+───────────────────────────────────────
+
+✅ 1. FONCTIONNALITÉS RGPD AJOUTÉES
+   - Page account.html avec gestion du compte utilisateur
+   - Bouton "Télécharger mes données" (export JSON)
+   - Endpoint /api/user/export sur le serveur
+   - Suppression de compte conforme RGPD
+
+✅ 2. MENU UTILISATEUR AMÉLIORÉ
+   - Menu déroulant avec avatar et nom d'utilisateur
+   - Mécanisme de retry pour compatibilité GitHub Pages
+   - Affichage cohérent local vs GitHub Pages
+
+✅ 3. GITIGNORE MIS À JOUR
+   - Les fichiers .md ne seront plus poussés sur GitHub
+   - Exception pour README.md
+
+✅ 4. OUTILS DE DÉBOGAGE DU PANIER
+   - cart-debug.js: Script de débogage complet
+   - test-cart.html: Page de test isolée
+
+═══════════════════════════════════════════════════════════════
+🔍 COMMENT DÉBOGUER LE PANIER
+═══════════════════════════════════════════════════════════════
+
+🌐 ÉTAPE 1: TESTER LOCALEMENT
+───────────────────────────────
+
+1. Ouvrir index.html dans votre navigateur
+2. Ouvrir la Console de développement (F12 → Console)
+3. Vous devriez voir : "🔍 CART DEBUG MODE ACTIVATED"
+
+4. Essayer d'ajouter un produit:
+   - Cliquer sur un bouton "Ajouter"
+   - Observer les messages dans la console
+
+5. Messages attendus:
+   ✅ "🖱️ CLICK EVENT FIRED" - Le clic est détecté
+   ✅ "💾 localStorage.setItem" - Le panier est sauvegardé
+   ✅ Données du panier affichées
+
+6. Si vous ne voyez PAS ces messages:
+   ❌ Le problème est dans la liaison des événements
+   → Partagez la console avec moi
+
+
+🧪 ÉTAPE 2: TESTER AVEC test-cart.html
+──────────────────────────────────────
+
+1. Ouvrir test-cart.html dans le navigateur
+2. Cliquer sur "Ajouter au panier" pour les produits test
+3. Vérifier que:
+   - Le compteur augmente
+   - Les logs s'affichent
+   - localStorage contient les données
+
+4. Utiliser les boutons de test:
+   - "Afficher le Panier" → Voir le contenu
+   - "Vérifier localStorage" → Inspecter les données
+   - "Vider le Panier" → Reset
+
+
+🌍 ÉTAPE 3: TESTER SUR GITHUB PAGES
+────────────────────────────────────
+
+1. Aller sur: https://degdamentals.github.io/Crispin/
+2. Ouvrir la Console (F12 → Console)
+3. Même tests que l'étape 1
+
+Si ça fonctionne en local mais PAS sur GitHub Pages:
+→ Problème de chargement des scripts ou chemins de fichiers
+
+
+═══════════════════════════════════════════════════════════════
+🛠️ TESTS MANUELS DANS LA CONSOLE
+═══════════════════════════════════════════════════════════════
+
+Tapez ces commandes dans la console du navigateur:
+
+1. Tester la fonction addToCart:
+   testAddToCart(1)
+   → Devrait ajouter le produit 1
+
+2. Vérifier le panier en mémoire:
+   cart
+   → Affiche le contenu du tableau cart
+
+3. Vérifier localStorage:
+   localStorage.getItem('crispinCart')
+   → Affiche le JSON brut
+
+4. Parser le panier:
+   JSON.parse(localStorage.getItem('crispinCart'))
+   → Affiche l'objet JavaScript
+
+5. Compter les articles:
+   JSON.parse(localStorage.getItem('crispinCart')).reduce((sum, item) => sum + item.quantity, 0)
+   → Nombre total d'articles
+
+
+═══════════════════════════════════════════════════════════════
+❓ DIAGNOSTIC DES PROBLÈMES POSSIBLES
+═══════════════════════════════════════════════════════════════
+
+SYMPTÔME 1: Rien ne se passe au clic
+───────────────────────────────────
+Causes possibles:
+- Les event listeners ne sont pas attachés
+- Les boutons ne sont pas cliquables (z-index, pointer-events)
+- JavaScript désactivé
+
+SYMPTÔME 2: Le clic fonctionne mais rien dans localStorage
+───────────────────────────────────────────────────────────
+Causes possibles:
+- saveCart() n'est pas appelé
+- localStorage est désactivé/bloqué
+- Erreur JavaScript avant saveCart()
+
+SYMPTÔME 3: localStorage OK mais panier vide sur cart.html
+───────────────────────────────────────────────────────────
+Causes possibles:
+- cart.js ne charge pas
+- Problème de clé localStorage différente
+- cart.js charge avant que localStorage soit prêt
+
+SYMPTÔME 4: Fonctionne en local mais pas sur GitHub Pages
+──────────────────────────────────────────────────────────
+Causes possibles:
+- Chemins relatifs incorrects (js/script.js vs ./js/script.js)
+- Scripts chargés dans le mauvais ordre
+- Problème de CORS ou CSP
+
+
+═══════════════════════════════════════════════════════════════
+📤 PROCHAINES ÉTAPES
+═══════════════════════════════════════════════════════════════
+
+1. ✅ Effectuer les tests ci-dessus
+2. ✅ Noter EXACTEMENT ce qui se passe (ou ne se passe pas)
+3. ✅ Copier les messages de la console
+4. ✅ Me les envoyer pour que je puisse corriger le problème
+
+🚀 Une fois le problème identifié, je pourrai créer un fix ciblé!
+
+
+═══════════════════════════════════════════════════════════════
+📊 FICHIERS MODIFIÉS DANS CE COMMIT
+═══════════════════════════════════════════════════════════════
+
+✅ account.html         - Page compte utilisateur + export données
+✅ server.js            - Endpoint /api/user/export
+✅ js/user-menu.js      - Retry mechanism pour GitHub Pages
+✅ .gitignore           - Exclure les .md (sauf README.md)
+✅ js/cart-debug.js     - Nouveau script de débogage (à retirer après)
+✅ test-cart.html       - Page de test isolée
+✅ index.html           - Ajout temporaire de cart-debug.js
+
+═══════════════════════════════════════════════════════════════
+
+💡 CONSEIL: Gardez la console ouverte pendant tous les tests!
+
+═══════════════════════════════════════════════════════════════
