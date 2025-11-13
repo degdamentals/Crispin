@@ -23,45 +23,91 @@ function initUserMenu() {
 }
 
 function renderLoggedInMenu(container, user) {
-    container.innerHTML = `
-        <div class="user-account-btn" id="userAccountBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <span class="user-name">${user.firstName}</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
-                <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-        </div>
-        <div class="user-dropdown" id="userDropdown">
-            <div class="user-dropdown-header">
-                <div class="user-avatar">
-                    ${user.firstName.charAt(0)}${user.lastName.charAt(0)}
-                </div>
-                <div class="user-info">
-                    <div class="user-fullname">${user.firstName} ${user.lastName}</div>
-                    <div class="user-email">${user.email}</div>
-                </div>
-            </div>
-            <div class="user-dropdown-divider"></div>
-            <a href="account.html" class="user-dropdown-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    const isGuest = user.id === 'guest' || user.role === 'guest';
+    const avatar = isGuest ? 'I' : `${user.firstName.charAt(0)}${(user.lastName || '').charAt(0)}`;
+    const fullname = isGuest ? 'Invité' : `${user.firstName} ${user.lastName || ''}`;
+    const email = user.email || 'Mode invité';
+
+    // For guests, show simpler menu
+    if (isGuest) {
+        container.innerHTML = `
+            <div class="user-account-btn" id="userAccountBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                Mon Compte
-            </a>
-            <a href="#" class="user-dropdown-item" onclick="logout(event)">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                <span class="user-name">Invité</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
+                    <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
-                Déconnexion
-            </a>
-        </div>
-    `;
+            </div>
+            <div class="user-dropdown" id="userDropdown">
+                <div class="user-dropdown-header">
+                    <div class="user-avatar">I</div>
+                    <div class="user-info">
+                        <div class="user-fullname">Mode Invité</div>
+                        <div class="user-email">Non connecté</div>
+                    </div>
+                </div>
+                <div class="user-dropdown-divider"></div>
+                <a href="login.html" class="user-dropdown-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    Se connecter
+                </a>
+                <a href="#" class="user-dropdown-item" onclick="logout(event)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Quitter le mode invité
+                </a>
+            </div>
+        `;
+    } else {
+        // Regular logged in user
+        container.innerHTML = `
+            <div class="user-account-btn" id="userAccountBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span class="user-name">${user.firstName}</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="user-dropdown" id="userDropdown">
+                <div class="user-dropdown-header">
+                    <div class="user-avatar">${avatar}</div>
+                    <div class="user-info">
+                        <div class="user-fullname">${fullname}</div>
+                        <div class="user-email">${email}</div>
+                    </div>
+                </div>
+                <div class="user-dropdown-divider"></div>
+                <a href="account.html" class="user-dropdown-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Mon Compte
+                </a>
+                <a href="#" class="user-dropdown-item" onclick="logout(event)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Déconnexion
+                </a>
+            </div>
+        `;
+    }
 
     // Setup dropdown toggle
     const accountBtn = document.getElementById('userAccountBtn');

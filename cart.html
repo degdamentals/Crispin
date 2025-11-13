@@ -8,45 +8,33 @@
     <link rel="stylesheet" href="css/cart-styles.css">
 </head>
 <body>
-    <!-- Barre de progression de scroll -->
-    <div class="scroll-progress" id="scrollProgress"></div>
-
-    <!-- Header avec navigation -->
+    <!-- HEADER -->
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <a href="index.html" style="text-decoration: none; color: inherit;">
-                        <h1>CRISPIN<span class="logo-accent">LA BOUTIQUE</span></h1>
-                    </a>
-                </div>
-                <nav class="nav">
-                    <ul>
-                        <li><a href="index.html#accueil">Accueil</a></li>
-                        <li><a href="index.html#produits">Produits</a></li>
-                        <li><a href="index.html#categories">Catégories</a></li>
-                        <li><a href="index.html#contact">Contact</a></li>
-                    </ul>
-                </nav>
-                <div class="header-actions">
-                    <button class="search-btn" id="searchBtn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                    </button>
+                <a href="index.html" class="logo">
+                    <span class="logo-text">CRISPIN</span>
+                    <span class="logo-subtitle">La Boutique</span>
+                </a>
 
+                <nav class="nav">
+                    <a href="index.html#accueil">Accueil</a>
+                    <a href="index.html#produits">Produits</a>
+                    <a href="index.html#contact">Contact</a>
+                </nav>
+
+                <div class="header-actions">
                     <!-- User Account Button -->
                     <div class="user-menu" id="userMenu">
                         <!-- Will be populated by JavaScript -->
                     </div>
 
-                    <button class="cart-btn active">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M9 2L7 6h10l-2-4H9z"></path>
-                            <path d="M7 6h10l1 14H6L7 6z"></path>
+                    <!-- Cart Button -->
+                    <button class="cart-btn active" id="cartBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="15" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                         </svg>
                         <span class="cart-count" id="cartCount">0</span>
                     </button>
@@ -55,293 +43,101 @@
         </div>
     </header>
 
-    <!-- Progress Steps -->
-    <div class="checkout-progress">
-        <div class="container">
-            <div class="progress-steps">
-                <div class="progress-step active">
-                    <div class="step-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M9 2L7 6h10l-2-4H9z"></path>
-                            <path d="M7 6h10l1 14H6L7 6z"></path>
-                        </svg>
-                    </div>
-                    <div class="step-text">
-                        <span class="step-number">1</span>
-                        <span class="step-label">Panier</span>
-                    </div>
-                </div>
-                <div class="progress-line"></div>
-                <div class="progress-step">
-                    <div class="step-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <rect x="1" y="3" width="15" height="13"></rect>
-                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                        </svg>
-                    </div>
-                    <div class="step-text">
-                        <span class="step-number">2</span>
-                        <span class="step-label">Livraison</span>
-                    </div>
-                </div>
-                <div class="progress-line"></div>
-                <div class="progress-step">
-                    <div class="step-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                            <line x1="1" y1="10" x2="23" y2="10"></line>
-                        </svg>
-                    </div>
-                    <div class="step-text">
-                        <span class="step-number">3</span>
-                        <span class="step-label">Paiement</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Cart Section -->
+    <!-- CART SECTION -->
     <section class="cart-section">
         <div class="container">
-            <div class="cart-header">
-                <h1 class="cart-title">
-                    <span class="icon-wrapper">🛒</span>
-                    Votre Panier
-                </h1>
-                <p class="cart-subtitle" id="cartItemsCount">0 article dans votre panier</p>
+            <h1 class="page-title">Votre Panier</h1>
+
+            <!-- Empty Cart State -->
+            <div class="empty-cart" id="emptyCart" style="display: none;">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <h2>Votre panier est vide</h2>
+                <p>Ajoutez des produits pour commencer votre commande</p>
+                <a href="index.html#produits" class="btn btn-primary">Voir les produits</a>
             </div>
 
-            <div class="cart-layout">
-                <!-- Cart Items -->
-                <div class="cart-items-section">
-                    <div id="emptyCart" class="empty-cart">
-                        <div class="empty-cart-icon">
-                            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <circle cx="9" cy="21" r="1"></circle>
-                                <circle cx="20" cy="21" r="1"></circle>
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
+            <!-- Cart Content -->
+            <div class="cart-content" id="cartContent">
+                <div class="cart-grid">
+                    <!-- Cart Items -->
+                    <div class="cart-items">
+                        <div id="cartItemsList">
+                            <!-- Items will be populated here -->
                         </div>
-                        <h2>Votre panier est vide</h2>
-                        <p>Découvrez nos produits professionnels et ajoutez-les à votre panier</p>
-                        <a href="index.html#produits" class="btn btn-primary btn-large">
-                            <span>Découvrir nos produits</span>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </a>
                     </div>
 
-                    <div id="cartItemsList" class="cart-items-list"></div>
-
-                    <!-- Promo Code -->
-                    <div id="promoSection" class="promo-section" style="display: none;">
-                        <div class="promo-header">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                            </svg>
-                            <h3>Code promo</h3>
-                        </div>
-                        <div class="promo-input-group">
-                            <input type="text" id="promoCode" placeholder="Entrez votre code promo">
-                            <button class="btn btn-secondary" onclick="applyPromoCode()">Appliquer</button>
-                        </div>
-                        <div id="promoMessage" class="promo-message"></div>
-                    </div>
-
-                    <!-- Continue Shopping -->
-                    <div id="continueShopping" class="continue-shopping" style="display: none;">
-                        <a href="index.html#produits" class="continue-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <line x1="19" y1="12" x2="5" y2="12"></line>
-                                <polyline points="12 19 5 12 12 5"></polyline>
-                            </svg>
-                            Continuer mes achats
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Cart Summary -->
-                <div class="cart-summary-section">
+                    <!-- Cart Summary -->
                     <div class="cart-summary">
-                        <h3 class="summary-title">Récapitulatif</h3>
+                        <h2>Résumé de la commande</h2>
 
-                        <div class="summary-details">
-                            <div class="summary-row">
-                                <span>Sous-total</span>
-                                <span id="subtotal">0,00 €</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>TVA (20%)</span>
-                                <span id="taxAmount">0,00 €</span>
-                            </div>
-                            <div class="summary-row discount-row" id="discountRow" style="display: none;">
-                                <span>Remise</span>
-                                <span class="discount-amount" id="discountAmount">-0,00 €</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Livraison</span>
-                                <span id="shippingCost" class="shipping-free">OFFERTE</span>
-                            </div>
-
-                            <div class="shipping-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" id="shippingProgress"></div>
-                                </div>
-                                <p id="shippingMessage" class="shipping-message">
-                                    Plus que <strong>200,00 €</strong> pour la livraison gratuite !
-                                </p>
-                            </div>
-
-                            <div class="summary-divider"></div>
-
-                            <div class="summary-row total-row">
-                                <span>Total TTC</span>
-                                <span id="totalAmount" class="total-price">0,00 €</span>
-                            </div>
+                        <div class="summary-row">
+                            <span>Sous-total</span>
+                            <span id="subtotal">0.00 €</span>
                         </div>
 
-                        <button class="btn btn-primary btn-block btn-large checkout-btn" id="checkoutBtn">
-                            <span>Passer la commande</span>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
+                        <div class="summary-row">
+                            <span>Livraison</span>
+                            <span id="shipping">15.00 €</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>TVA (20%)</span>
+                            <span id="tax">0.00 €</span>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span id="total">0.00 €</span>
+                        </div>
+
+                        <div class="shipping-info">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             </svg>
+                            <span id="shippingMessage">Plus que <strong id="remaining">200.00 €</strong> pour la livraison gratuite !</span>
+                        </div>
+
+                        <button class="btn btn-primary btn-block" id="checkoutBtn">
+                            Procéder au paiement
                         </button>
 
-                        <!-- Trust Badges -->
-                        <div class="trust-badges">
-                            <div class="trust-badge">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                </svg>
-                                <span>Paiement sécurisé</span>
-                            </div>
-                            <div class="trust-badge">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <rect x="1" y="3" width="15" height="13"></rect>
-                                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                                </svg>
-                                <span>Livraison 24h</span>
-                            </div>
-                            <div class="trust-badge">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                </svg>
-                                <span>Retour gratuit 30j</span>
-                            </div>
-                        </div>
-
-                        <!-- Payment Methods -->
-                        <div class="payment-methods">
-                            <p>Paiement 100% sécurisé</p>
-                            <div class="payment-icons">
-                                <div class="payment-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                                        <line x1="1" y1="10" x2="23" y2="10"></line>
-                                    </svg>
-                                </div>
-                                <div class="payment-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                    </svg>
-                                </div>
-                                <div class="payment-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Urgency Banner -->
-                    <div class="urgency-banner">
-                        <div class="urgency-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                        <div class="urgency-content">
-                            <strong>Commandez maintenant</strong>
-                            <p>Expédition aujourd'hui avant 16h</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- You may also like -->
-            <div id="recommendations" class="recommendations-section" style="display: none;">
-                <h2 class="section-title">Ces produits pourraient vous intéresser</h2>
-                <div class="recommendations-grid" id="recommendationsGrid"></div>
-            </div>
-
-            <!-- Why Choose Us -->
-            <div class="why-us-section">
-                <h2 class="section-title">Pourquoi commander chez Crispin ?</h2>
-                <div class="why-us-grid">
-                    <div class="why-us-card">
-                        <div class="why-us-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-                                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-                                <path d="M4 22h16"></path>
-                                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
-                                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
-                                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
-                            </svg>
-                        </div>
-                        <h3>60 ans d'expertise</h3>
-                        <p>Une expérience reconnue depuis 1963 dans les solutions professionnelles</p>
-                    </div>
-                    <div class="why-us-card">
-                        <div class="why-us-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                            </svg>
-                        </div>
-                        <h3>Livraison express</h3>
-                        <p>Expédition sous 24h pour toutes vos commandes</p>
-                    </div>
-                    <div class="why-us-card">
-                        <div class="why-us-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                        </div>
-                        <h3>Qualité garantie</h3>
-                        <p>Tous nos produits sont testés et certifiés</p>
-                    </div>
-                    <div class="why-us-card">
-                        <div class="why-us-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <circle cx="12" cy="12" r="6"></circle>
-                                <circle cx="12" cy="12" r="2"></circle>
-                            </svg>
-                        </div>
-                        <h3>Stock permanent</h3>
-                        <p>Plus de 1000 références disponibles immédiatement</p>
+                        <a href="index.html#produits" class="btn btn-secondary btn-block">
+                            Continuer mes achats
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Particules de fond -->
-    <canvas id="particlesCanvas"></canvas>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>CRISPIN La Boutique</h3>
+                    <p>Votre partenaire en fournitures industrielles</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html#contact">Contact</a>
+                    <a href="index.html#produits">Produits</a>
+                    <a href="#">Mentions légales</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Crispin La Boutique. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="js/config.js"></script>
     <script src="js/user-menu.js"></script>
-    <script src="js/script.js"></script>
     <script src="js/cart.js"></script>
 </body>
 </html>

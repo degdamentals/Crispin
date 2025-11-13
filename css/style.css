@@ -178,6 +178,27 @@ body::before {
     letter-spacing: 2px;
 }
 
+.logo {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--secondary);
+    letter-spacing: 1px;
+}
+
+.logo-subtitle {
+    font-size: 0.85rem;
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
 .nav ul {
     display: flex;
     list-style: none;
@@ -1515,7 +1536,7 @@ body::before {
 
     /* Ralentir l'animation du bandeau en mobile */
     .announcement-content {
-        animation: scroll 50s linear infinite;
+        animation: scroll 80s linear infinite;
     }
 }
 
