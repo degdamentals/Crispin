@@ -6,7 +6,7 @@ const isProduction = window.location.hostname !== 'localhost' && window.location
 const CONFIG = {
     // URL de l'API backend
     API_URL: isProduction
-        ? 'https://crispin-backend.onrender.com/api'  // À REMPLACER après déploiement sur Render
+        ? 'https://crispin.onrender.com'  // À REMPLACER après déploiement sur Render
         : 'http://localhost:4000/api',
 
     // Autres configurations
