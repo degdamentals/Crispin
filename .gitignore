@@ -35,3 +35,8 @@ logs/
 # Temporary files
 tmp/
 temp/
+
+# Documentation (keep only README.md in root)
+*.md
+!README.md
+docs/*.md

@@ -451,6 +451,37 @@ app.delete('/api/user/delete', async (req, res) => {
     }
 });
 
+// Export user's own data (RGPD)
+app.get('/api/user/export', async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ error: 'Token manquant' });
+        }
+
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const userId = decoded.userId;
+
+        const conversations = await readJSON(AI_CONVERSATIONS_FILE);
+        const orders = await readJSON(ORDERS_FILE);
+
+        // Filter only this user's data
+        const userConversations = conversations.filter(c => c.userId === userId);
+        const userOrders = orders.filter(o => o.userId === userId);
+
+        res.json({
+            success: true,
+            conversations: userConversations,
+            orders: userOrders
+        });
+
+    } catch (error) {
+        console.error('Export user data error:', error);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
 // =======================
 // ADMIN ROUTES
 // =======================

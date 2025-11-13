@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Panier - Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            background: #FC4C02;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #d93f00;
+        }
+        #cartCount {
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .log {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 3px solid #FC4C02;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test du Panier - Debug</h1>
+
+    <div>
+        <strong>Compteur Panier : </strong>
+        <span id="cartCount">0</span>
+    </div>
+
+    <h2>Produits</h2>
+    <div class="product">
+        <div>
+            <h3>Produit 1 - Colle Extra-Forte</h3>
+            <p>Prix: 24.90 €</p>
+        </div>
+        <button onclick="testAddToCart(1)">Ajouter au panier</button>
+    </div>
+
+    <div class="product">
+        <div>
+            <h3>Produit 2 - Teinture Cuir</h3>
+            <p>Prix: 35.00 €</p>
+        </div>
+        <button onclick="testAddToCart(2)">Ajouter au panier</button>
+    </div>
+
+    <h2>État du Panier</h2>
+    <div id="cartStatus" class="log">Pas encore chargé...</div>
+
+    <h2>Console Logs</h2>
+    <div id="logs" class="log">Logs apparaîtront ici...</div>
+
+    <h2>Actions</h2>
+    <button onclick="showCart()">Afficher le Panier</button>
+    <button onclick="clearCart()" style="background: #dc2626;">Vider le Panier</button>
+    <button onclick="checkLocalStorage()">Vérifier localStorage</button>
+
+    <script>
+        // Mock products
+        const products = [
+            { id: 1, name: "Colle Extra-Forte", price: 24.90 },
+            { id: 2, name: "Teinture Cuir", price: 35.00 }
+        ];
+
+        let cart = [];
+        let logs = [];
+
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            logs.push(logMessage);
+            console.log(logMessage);
+            document.getElementById('logs').textContent = logs.join('\n');
+        }
+
+        function updateCartDisplay() {
+            const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = total;
+
+            const cartStatus = document.getElementById('cartStatus');
+            cartStatus.textContent = `Articles: ${cart.length}\n` + JSON.stringify(cart, null, 2);
+
+            log(`✅ Affichage mis à jour: ${total} articles`);
+        }
+
+        function saveCart() {
+            localStorage.setItem('crispinCart', JSON.stringify(cart));
+            log(`💾 Panier sauvegardé: ${JSON.stringify(cart)}`);
+        }
+
+        function loadCart() {
+            const saved = localStorage.getItem('crispinCart');
+            if (saved) {
+                cart = JSON.parse(saved);
+                log(`📖 Panier chargé: ${cart.length} articles`);
+            } else {
+                log(`ℹ️ Aucun panier sauvegardé`);
+            }
+            updateCartDisplay();
+        }
+
+        function testAddToCart(productId) {
+            log(`🖱️ Clic sur "Ajouter" pour produit ${productId}`);
+
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                log(`❌ Produit ${productId} non trouvé`);
+                return;
+            }
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity++;
+                log(`📦 Quantité augmentée: ${existing.quantity}`);
+            } else {
+                cart.push({ id: productId, quantity: 1 });
+                log(`➕ Nouveau produit ajouté: ${product.name}`);
+            }
+
+            log(`🛒 Panier actuel: ${JSON.stringify(cart)}`);
+
+            saveCart();
+            updateCartDisplay();
+        }
+
+        function showCart() {
+            alert('Panier:\n' + JSON.stringify(cart, null, 2));
+        }
+
+        function clearCart() {
+            if (confirm('Vider le panier ?')) {
+                cart = [];
+                localStorage.removeItem('crispinCart');
+                log(`🗑️ Panier vidé`);
+                updateCartDisplay();
+            }
+        }
+
+        function checkLocalStorage() {
+            const stored = localStorage.getItem('crispinCart');
+            log(`📦 localStorage['crispinCart'] = ${stored}`);
+            alert('Contenu de localStorage:\n\n' + (stored || 'VIDE'));
+        }
+
+        // Initialize
+        log('🚀 Initialisation du test');
+        loadCart();
+    </script>
+</body>
+</html>

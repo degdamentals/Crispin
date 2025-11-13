@@ -3,7 +3,12 @@
 
 function initUserMenu() {
     const userMenuEl = document.getElementById('userMenu');
-    if (!userMenuEl) return;
+    if (!userMenuEl) {
+        console.warn('⚠️ Element #userMenu not found');
+        return;
+    }
+
+    console.log('👤 Initializing user menu...');
 
     const user = JSON.parse(localStorage.getItem('crispinUser') || '{}');
     const token = localStorage.getItem('crispinToken');
@@ -102,9 +107,19 @@ function logout(event) {
     }
 }
 
-// Initialize on DOM ready
+// Initialize on DOM ready - with retry mechanism
+function safeInitUserMenu() {
+    if (document.getElementById('userMenu')) {
+        initUserMenu();
+    } else {
+        console.log('⏳ Waiting for #userMenu...');
+        // Retry after a short delay
+        setTimeout(safeInitUserMenu, 100);
+    }
+}
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initUserMenu);
+    document.addEventListener('DOMContentLoaded', safeInitUserMenu);
 } else {
-    initUserMenu();
+    safeInitUserMenu();
 }

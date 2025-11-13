@@ -11,7 +11,8 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(start https://github.com/degdamentals/Crispin/settings/pages)"
+      "Bash(start https://github.com/degdamentals/Crispin/settings/pages)",
+      "Bash(start test-cart.html)"
     ],
     "deny": [],
     "ask": []

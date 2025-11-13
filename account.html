@@ -266,12 +266,34 @@
             </div>
         </div>
 
+        <!-- Actions Card -->
+        <div class="account-card">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"></path>
+                </svg>
+                Actions
+            </h2>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="btn-secondary" onclick="exportMyData()" style="flex: 1; min-width: 200px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Télécharger mes données
+                </button>
+            </div>
+        </div>
+
         <!-- RGPD Info -->
         <div class="rgpd-info">
             <h4>🛡️ Vos Droits RGPD</h4>
             <ul>
                 <li>Vous avez le droit d'accéder à vos données personnelles</li>
                 <li>Vous pouvez demander la rectification de vos informations</li>
+                <li>Vous pouvez télécharger toutes vos données (export JSON)</li>
                 <li>Vous pouvez supprimer votre compte et toutes vos données à tout moment</li>
                 <li>Vos données sont stockées de manière sécurisée et ne sont jamais partagées avec des tiers</li>
             </ul>
@@ -411,6 +433,48 @@
                 console.error('Delete account error:', error);
                 alert('❌ Erreur lors de la suppression du compte. Veuillez réessayer ou nous contacter.');
                 closeDeleteModal();
+            }
+        }
+
+        // Export user data
+        async function exportMyData() {
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/user/export`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'export');
+                }
+
+                const data = await response.json();
+
+                // Create downloadable JSON file
+                const exportData = {
+                    user: user,
+                    conversations: data.conversations || [],
+                    orders: data.orders || [],
+                    exportDate: new Date().toISOString()
+                };
+
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `crispin-mes-donnees-${user.id}-${Date.now()}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                alert('✅ Vos données ont été téléchargées avec succès !');
+            } catch (error) {
+                console.error('Export data error:', error);
+                alert('❌ Erreur lors de l\'export des données. Veuillez réessayer.');
             }
         }
 
