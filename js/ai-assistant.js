@@ -226,7 +226,7 @@ function hideTyping() {
 }
 
 // Send user message
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('aiInput');
     const message = input.value.trim();
 
@@ -240,19 +240,33 @@ function sendMessage() {
     // Show typing
     showTyping();
 
-    // Simulate AI response (in a real app, this would call an AI API)
-    setTimeout(() => {
+    // Generate AI response with reasoning
+    try {
+        const response = await generateAIResponse(userQuestion);
+
+        // Simulate thinking time for better UX
+        await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+
         hideTyping();
-        let response = generateAIResponse(userQuestion);
 
-        // Use improved response from learning system
-        response = aiLearning.getImprovedResponse(userQuestion, response, currentProduct.id);
+        // Use improved response from learning system if available
+        let finalResponse = response;
+        if (typeof aiLearning !== 'undefined') {
+            finalResponse = aiLearning.getImprovedResponse(userQuestion, response, currentProduct.id);
+        }
 
-        addMessage('assistant', response, userQuestion);
+        addMessage('assistant', finalResponse, userQuestion);
 
-        // Update suggestions dynamically
-        updateSuggestions();
-    }, 1500 + Math.random() * 1000);
+        // Save conversation
+        if (typeof aiLearning !== 'undefined') {
+            aiLearning.recordExchange(userQuestion, finalResponse, currentProduct.id);
+        }
+
+    } catch (error) {
+        console.error('Error generating response:', error);
+        hideTyping();
+        addMessage('assistant', 'Désolé, une erreur s\'est produite. Pouvez-vous reformuler votre question ?');
+    }
 }
 
 // Save conversation to server
@@ -373,82 +387,82 @@ function updateSuggestions() {
 }
 
 // Generate simulated AI response
-function generateAIResponse(userMessage) {
+// Generate AI Response using advanced reasoning engine
+async function generateAIResponse(userMessage) {
+    console.log('🤖 Generating AI response with reasoning...');
+
+    // Check if reasoning engine is available
+    if (typeof window.aiReasoning === 'undefined') {
+        console.warn('⚠️ AI Reasoning Engine not loaded, using fallback');
+        return generateFallbackResponse(userMessage);
+    }
+
+    try {
+        // Use the reasoning engine
+        const result = await window.aiReasoning.reason(userMessage, currentProduct);
+
+        console.log('💡 Reasoning complete:', result);
+        console.log('🧠 Reasoning steps:', result.reasoning);
+
+        // Update suggestions if provided
+        if (result.suggestions && result.suggestions.length > 0) {
+            updateSuggestions(result.suggestions);
+        }
+
+        // Show confidence indicator if low
+        let response = result.response;
+        if (result.confidence < 0.7) {
+            response += '\n\n💭 _Niveau de confiance: ' + (result.confidence * 100).toFixed(0) + '%_';
+        }
+
+        return response;
+
+    } catch (error) {
+        console.error('❌ Error in AI reasoning:', error);
+        return generateFallbackResponse(userMessage);
+    }
+}
+
+// Fallback response generator (simple rules-based)
+function generateFallbackResponse(userMessage) {
     const lowerMessage = userMessage.toLowerCase();
 
-    // Greetings and personal questions (respond as professional assistant)
-    if (lowerMessage.match(/^(salut|bonjour|hello|hi|hey|coucou)/)) {
-        return `Bonjour ! Je suis votre assistant produit Crispin. Je suis là pour répondre à toutes vos questions concernant ${currentProduct.name}. Comment puis-je vous aider aujourd'hui ?`;
+    // Greetings
+    if (lowerMessage.match(/^(salut|bonjour|hello|hi)/)) {
+        return `Bonjour ! Je suis votre assistant IA. Posez-moi vos questions sur **${currentProduct.name}**.`;
     }
 
-    if (lowerMessage.includes('comment ça va') || lowerMessage.includes('comment vas-tu') || lowerMessage.includes('tu vas bien') || lowerMessage.includes('comment allez-vous')) {
-        return `Je vais très bien, merci ! Je suis ici pour vous assister avec ${currentProduct.name}. Avez-vous des questions sur ce produit ? Je peux vous renseigner sur ses applications, caractéristiques, prix, disponibilité ou tout autre aspect.`;
+    // Politeness
+    if (lowerMessage.includes('merci')) {
+        return `Je vous en prie ! N'hésitez pas pour d'autres questions.`;
     }
 
-    if (lowerMessage.includes('qui es-tu') || lowerMessage.includes('qui êtes-vous') || lowerMessage.includes('c\'est quoi') || lowerMessage.match(/^(tu es qui|vous êtes qui)/)) {
-        return `Je suis l'assistant produit intelligent de Crispin La Boutique. Mon rôle est de vous conseiller et de répondre à vos questions sur ${currentProduct.name} et nos autres produits professionnels. N'hésitez pas à me poser vos questions !`;
+    if (lowerMessage.includes('au revoir') || lowerMessage.includes('bye')) {
+        return `Au revoir ! À bientôt !`;
     }
 
-    if (lowerMessage.includes('merci') || lowerMessage.includes('thank')) {
-        return `Je vous en prie ! Je reste à votre disposition pour toute question supplémentaire sur ${currentProduct.name} ou nos autres produits. N'hésitez pas !`;
+    // Price
+    if (lowerMessage.includes('prix') || lowerMessage.includes('coût')) {
+        return `**${currentProduct.name}** coûte ${currentProduct.price.toFixed(2)}€ ${currentProduct.unit}.`;
     }
 
-    if (lowerMessage.includes('au revoir') || lowerMessage.includes('bye') || lowerMessage.includes('à bientôt') || lowerMessage.includes('adieu')) {
-        return `Au revoir ! N'hésitez pas à me contacter à nouveau si vous avez d'autres questions sur nos produits. Bonne journée !`;
+    // Usage
+    if (lowerMessage.includes('utiliser') || lowerMessage.includes('application')) {
+        return `**${currentProduct.name}** : ${currentProduct.description}. Un excellent choix pour vos besoins professionnels.`;
     }
 
-    // Help/capabilities question
-    if (lowerMessage.includes('aide') || lowerMessage.includes('aider') || lowerMessage.includes('peux-tu') || lowerMessage.includes('pouvez-vous') || lowerMessage.includes('capable')) {
-        return `Je peux vous aider avec de nombreuses informations sur ${currentProduct.name} : applications, mode d'emploi, caractéristiques techniques, prix, disponibilité en stock, livraison, alternatives, et bien plus. Quelle information recherchez-vous ?`;
-    }
+    // Default
+    return `Concernant **${currentProduct.name}** : ${currentProduct.description}. Prix: ${currentProduct.price.toFixed(2)}€ ${currentProduct.unit}. Que souhaitez-vous savoir de plus ?`;
+}
 
-    // Application questions
-    if (lowerMessage.includes('application') || lowerMessage.includes('utiliser') || lowerMessage.includes('usage') || lowerMessage.includes('à quoi sert')) {
-        return `${currentProduct.name} est idéal pour ${currentProduct.description.toLowerCase()}. Ce produit professionnel offre d'excellentes performances pour une large gamme d'applications dans le domaine des ${getCategoryName(currentProduct.category).toLowerCase()}.`;
-    }
+// Update suggestion buttons
+function updateSuggestions(suggestions) {
+    const suggestionsContainer = document.getElementById('aiSuggestions');
+    if (!suggestionsContainer) return;
 
-    // Technical specs
-    if (lowerMessage.includes('caractéristique') || lowerMessage.includes('technique') || lowerMessage.includes('spécification')) {
-        return `${currentProduct.name} présente des caractéristiques techniques optimales pour un usage professionnel. Son conditionnement ${currentProduct.unit} permet une utilisation pratique et économique. Pour des spécifications techniques détaillées, je vous recommande de consulter la fiche produit complète.`;
-    }
-
-    // Price / Value
-    if (lowerMessage.includes('prix') || lowerMessage.includes('tarif') || lowerMessage.includes('coût')) {
-        return `Le prix de ${currentProduct.name} est de ${currentProduct.price.toFixed(2)} € ${currentProduct.unit}. C'est un excellent rapport qualité-prix pour ce niveau de qualité professionnelle. Nous offrons également la livraison gratuite dès 200€ d'achat.`;
-    }
-
-    // Quality
-    if (lowerMessage.includes('qualité') || lowerMessage.includes('fiable') || lowerMessage.includes('durabilité')) {
-        return `${currentProduct.name} fait partie de notre gamme professionnelle haute qualité. Chez Crispin, avec 60 ans d'expérience, nous sélectionnons uniquement des produits testés et certifiés pour leur performance et leur durabilité.`;
-    }
-
-    // Delivery
-    if (lowerMessage.includes('livraison') || lowerMessage.includes('expédition') || lowerMessage.includes('délai')) {
-        return `Nous expédions ${currentProduct.name} sous 24h. La livraison est gratuite pour toute commande supérieure à 200€. Votre satisfaction est notre priorité, avec un service de retour gratuit sous 30 jours.`;
-    }
-
-    // Alternatives / Recommendations
-    if (lowerMessage.includes('alternative') || lowerMessage.includes('autre') || lowerMessage.includes('similaire') || lowerMessage.includes('recommand')) {
-        const sameCategory = products.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id);
-        if (sameCategory.length > 0) {
-            const alt = sameCategory[0];
-            return `Dans la même catégorie, je vous recommande également ${alt.name} à ${alt.price.toFixed(2)} € ${alt.unit}. N'hésitez pas à comparer les deux produits pour trouver celui qui correspond le mieux à vos besoins.`;
-        }
-        return `${currentProduct.name} est un excellent choix dans sa catégorie. Je vous invite à explorer notre gamme complète de ${getCategoryName(currentProduct.category).toLowerCase()} pour découvrir d'autres options.`;
-    }
-
-    // How to use
-    if (lowerMessage.includes('comment') || lowerMessage.includes('mode d\'emploi') || lowerMessage.includes('instruction')) {
-        return `Pour utiliser ${currentProduct.name} de manière optimale, consultez la fiche produit détaillée qui contient les instructions complètes. Notre équipe d'experts est également disponible pour vous conseiller sur l'application spécifique à votre projet.`;
-    }
-
-    // Stock / Availability
-    if (lowerMessage.includes('stock') || lowerMessage.includes('disponible') || lowerMessage.includes('en stock')) {
-        return `${currentProduct.name} est disponible en stock permanent. Avec plus de 1000 références disponibles immédiatement, nous assurons une disponibilité constante de nos produits professionnels.`;
-    }
-
-    // Default response
-    return `Excellente question concernant ${currentProduct.name} ! Ce produit professionnel à ${currentProduct.price.toFixed(2)} € ${currentProduct.unit} offre ${currentProduct.description.toLowerCase()}. Pour des informations plus spécifiques, n'hésitez pas à préciser votre question ou à contacter notre équipe d'experts au +33 1 23 45 67 89.`;
+    suggestionsContainer.innerHTML = suggestions.map(s =>
+        `<button class="ai-suggestion" onclick="sendSuggestion('${s.replace(/'/g, "\\'")}')">${s}</button>`
+    ).join('');
 }
 
 // Send suggestion (quick answer)
