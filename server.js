@@ -8,7 +8,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(cors());
@@ -80,6 +80,39 @@ async function writeJSON(filePath, data) {
         return false;
     }
 }
+
+// =======================
+// TEST & INFO ROUTES
+// =======================
+
+// Health check / Test endpoint
+app.get('/api/test', (req, res) => {
+    res.json({
+        message: 'API Crispin fonctionne!',
+        timestamp: Date.now(),
+        environment: process.env.NODE_ENV || 'development',
+        version: '1.0.0'
+    });
+});
+
+// Root endpoint
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Crispin La Boutique API',
+        status: 'online',
+        endpoints: {
+            test: 'GET /api/test',
+            register: 'POST /api/auth/register',
+            login: 'POST /api/auth/login',
+            aiConversation: 'POST /api/ai/conversation',
+            aiConversations: 'GET /api/ai/conversations',
+            aiAnalytics: 'GET /api/ai/analytics',
+            orders: 'POST /api/orders',
+            userOrders: 'GET /api/orders/:userId',
+            updateOrder: 'PUT /api/orders/:orderId/status'
+        }
+    });
+});
 
 // =======================
 // AUTHENTICATION ROUTES
