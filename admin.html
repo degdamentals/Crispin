@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Analytics IA | Crispin La Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <div class="admin-logo">
+                    <img src="assets/logo.svg" alt="Crispin La Boutique" style="height: 40px;">
+                </div>
+                <h1>Tableau de Bord IA</h1>
+                <a href="index.html" class="btn-back">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Retour au site
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- KPIs Cards -->
+            <section class="kpi-section">
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Total Interactions</div>
+                        <div class="kpi-value" id="totalInteractions">0</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Taux de Satisfaction</div>
+                        <div class="kpi-value" id="satisfactionRate">0%</div>
+                        <div class="kpi-trend" id="satisfactionTrend"></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Évaluations Positives</div>
+                        <div class="kpi-value" id="positiveRatings">0</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Évaluations Négatives</div>
+                        <div class="kpi-value" id="negativeRatings">0</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2>Évolution du Taux de Satisfaction</h2>
+                        <p>Performance de l'IA au fil du temps</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="satisfactionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2>Patterns de Questions</h2>
+                        <p>Types de questions les plus fréquents</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="patternsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Top Questions -->
+            <section class="data-section">
+                <div class="data-card">
+                    <div class="data-header">
+                        <h2>Questions les Plus Fréquentes</h2>
+                        <button class="btn-refresh" onclick="refreshData()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                            </svg>
+                            Actualiser
+                        </button>
+                    </div>
+                    <div class="data-content" id="topQuestions">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="data-card">
+                    <div class="data-header">
+                        <h2>Patterns Performants</h2>
+                        <p>Taux de réussite par type de question</p>
+                    </div>
+                    <div class="data-content" id="topPatterns">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Improvement Areas -->
+            <section class="data-section">
+                <div class="data-card full-width">
+                    <div class="data-header">
+                        <h2>Zones d'Amélioration</h2>
+                        <p>Questions nécessitant de meilleures réponses</p>
+                    </div>
+                    <div class="data-content" id="improvementAreas">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Feedback -->
+            <section class="data-section">
+                <div class="data-card full-width">
+                    <div class="data-header">
+                        <h2>Retours Utilisateurs Récents</h2>
+                        <p>Derniers commentaires et suggestions</p>
+                    </div>
+                    <div class="data-content" id="recentFeedback">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actions -->
+            <section class="actions-section">
+                <div class="actions-card">
+                    <h2>Actions de Gestion</h2>
+                    <div class="actions-buttons">
+                        <button class="btn-action btn-export" onclick="exportData()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Exporter les Données
+                        </button>
+                        <button class="btn-action btn-reset" onclick="resetLearning()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="1 4 1 10 7 10"></polyline>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                            </svg>
+                            Réinitialiser l'Apprentissage
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/ai-learning.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

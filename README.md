@@ -1,162 +1,185 @@
-# Crispin La Boutique 🛒
+# Crispin La Boutique - E-commerce Professionnel
 
 Site e-commerce moderne pour **Crispin Industrie** - 60 ans d'expertise en solutions adhésives et produits professionnels.
 
-## 🎨 Design
-
-Le site utilise la **couleur Pantone 1655C** (#FC4C02) comme couleur principale, un orange vibrant et dynamique qui reflète l'énergie et l'innovation de l'entreprise.
-
-### Palette de couleurs
-- **Principal** : #FC4C02 (Pantone 1655C)
-- **Secondaire** : #383837 (Gris anthracite)
-- **Accent** : #59c35e (Vert)
-
-## ✨ Fonctionnalités
-
-### Page d'accueil
-- ✅ **Bandeau défilant** avec promotions et informations
-- ✅ **Hero section** avec image du site vitrine
-- ✅ **Statistiques animées** (compteurs qui s'animent au scroll)
-- ✅ **Carrousel de produits phares** avec navigation
-- ✅ **Section À propos** avec badge animé "60 ans"
-- ✅ **4 catégories principales** : Colles, Teintures, Renforts, Machines
-- ✅ **Logos partenaires** en défilement continu
-- ✅ **Témoignages clients** avec notes
-- ✅ **Section CTA** (Call-to-Action)
-- ✅ **24 produits** répartis dans les 4 catégories
-
-### Système e-commerce
-- ✅ **Panier d'achat complet**
-  - Ajout/retrait de produits
-  - Gestion des quantités
-  - Calcul automatique du total
-  - Sauvegarde locale (localStorage)
-
-- ✅ **Pages produits détaillées**
-  - Images et descriptions complètes
-  - Onglets (Description, Caractéristiques, Utilisation, Avis)
-  - Système de notation client
-  - Produits similaires
-  - Breadcrumb de navigation
-
-- ✅ **Filtres par catégorie**
-- ✅ **Recherche** (interface prête)
-
-### Animations
-- ✅ Bandeau défilant continu
-- ✅ Formes géométriques animées dans le hero
-- ✅ Compteurs animés pour les statistiques
-- ✅ Carrousel de produits avec navigation
-- ✅ Défilement infini des logos partenaires
-- ✅ Effets de hover sophistiqués
-- ✅ Transitions fluides entre les sections
-- ✅ Animations d'apparition des produits
-
-## 📁 Structure des fichiers
-
-```
-crispin-la-boutique/
-│
-├── index.html          # Page d'accueil
-├── product.html        # Page produit détaillée
-├── style.css           # Styles complets (1950+ lignes)
-├── script.js           # Script principal (630+ lignes)
-├── product.js          # Script page produit
-└── README.md           # Documentation
-```
-
-## 🚀 Utilisation
-
-1. Ouvrir `index.html` dans un navigateur moderne
-2. Naviguer entre les sections
-3. Cliquer sur un produit pour voir les détails
-4. Ajouter des produits au panier
-5. Le panier est sauvegardé automatiquement
-
-## 🎯 Produits
-
-### Colles (6 produits)
-- Colle Extra-Forte Pro (Bestseller)
-- Colle Néoprène Premium
-- Colle Contact Rapide (Nouveau)
-- Colle PU Structurale
-- Colle Époxy Bi-composant
-- Colle Hot-Melt Industriel
-
-### Teintures (6 produits)
-- Teinture Cuir Aniline (Premium)
-- Teinture Textile Professionnelle
-- Teinture Bois Aqua (Éco)
-- Pigments Universels
-- Teinture Vinyle Marine
-- Teinture Daim & Nubuck (Nouveau)
-
-### Renforts (6 produits)
-- Renfort Fibre de Verre
-- Renfort Carbone Pro (Premium)
-- Bande Kevlar Aramide
-- Non-tissé Thermocollant (Bestseller)
-- Renfort Polyester Tissé
-- Mat de Verre 300g
-
-### Machines (6 produits)
-- Pistolet Thermocollage Pro
-- Refendeuse de Précision
-- Presse à Chaud 40x50cm
-- Applicateur Colle Pneumatique (Nouveau)
-- Table de Découpe Laser (Premium)
-- Séchoir Infrarouge Mobile
-
-## 🎨 Images utilisées
-
-Le site utilise des images réelles du site vitrine Crispin Industrie :
-- Logo et icônes des catégories
-- Photo de la façade (2023)
-- Logos des partenaires (Angeleri, Barrera, Galli, etc.)
-
-## 📱 Responsive
-
-Le site est entièrement responsive avec breakpoints à :
-- **1024px** : Tablettes
-- **768px** : Petits écrans
-- **480px** : Mobiles
-
-## 🔧 Technologies
-
-- **HTML5** : Structure sémantique
-- **CSS3** : Animations, Grid, Flexbox
-- **JavaScript vanilla** : Aucune dépendance
-- **LocalStorage** : Sauvegarde du panier
-
-## 🌟 Points forts
-
-- ✨ Design moderne et vendeur
-- 🎨 Charte graphique cohérente avec Pantone 1655C
-- 🚀 Nombreuses animations fluides
-- 📱 Responsive sur tous les écrans
-- 🛒 Système de panier complet
-- 💾 Sauvegarde automatique
-- 🔍 Navigation intuitive
-- ⚡ Performance optimisée (pas de framework lourd)
-
-## 🚀 Évolutions futures possibles
-
-- [ ] Connexion à une vraie base de données
-- [ ] Système de paiement (Stripe, PayPal)
-- [ ] Compte client avec historique
-- [ ] Gestion des favoris
-- [ ] Système de recherche fonctionnel
-- [ ] Filtres avancés (prix, disponibilité)
-- [ ] Comparateur de produits
-- [ ] Newsletter
-- [ ] Chat en direct
-
-## 📞 Contact
-
-Pour toute question : contact@crispin-industrie.com
+[![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Pages-brightgreen)](https://github.com)
+[![Backend](https://img.shields.io/badge/Backend-Render.com-blue)](https://render.com)
+[![Node.js](https://img.shields.io/badge/Node.js-14%2B-green)](https://nodejs.org)
 
 ---
 
-**© 2025 Crispin Industrie - Tous droits réservés**
+## 🚀 Démarrage Rapide
 
-*60 ans d'expertise à votre service* 🎉
+```bash
+# 1. Cloner le repository
+git clone https://github.com/VOTRE-USERNAME/crispin-boutique.git
+cd crispin-boutique
+
+# 2. Installer les dépendances
+npm install
+
+# 3. Lancer le serveur backend
+node server.js
+
+# 4. Ouvrir index.html dans votre navigateur
+```
+
+📖 **[Guide de Déploiement Complet](./docs/GUIDE-DEPLOIEMENT.md)**
+
+---
+
+## ✨ Fonctionnalités
+
+### 🛒 E-commerce
+- 24 produits professionnels (Colles, Teintures, Renforts, Machines)
+- Panier intelligent avec synchronisation localStorage
+- Recherche en temps réel
+- Filtrage par catégorie
+- Page panier dédiée ([cart.html](./cart.html))
+
+### 🤖 Assistant IA avec Machine Learning
+- Conseils personnalisés sur chaque produit
+- Icône AI sur les produits (apparaît au survol)
+- Chat interactif professionnel
+- Système de notation (👍 Utile / 👎 Pas utile)
+- Apprentissage automatique basé sur 12 types de patterns
+- Réutilisation des meilleures réponses
+
+### 👤 Authentification
+- Inscription / Connexion utilisateur ([login.html](./login.html))
+- Mode invité
+- Tokens d'authentification sécurisés
+- Suivi des conversations par utilisateur
+
+### 📊 Dashboard Admin
+- Analytics en temps réel ([admin.html](./admin.html))
+- Graphiques Chart.js (satisfaction, patterns)
+- KPIs visuels
+- Top questions et zones d'amélioration
+- Export JSON
+
+### 🎨 Design
+- Pantone 1655C (#FC4C02)
+- Icons SVG professionnels
+- Particules animées (Canvas)
+- Barre de progression
+- Responsive (mobile, tablette, desktop)
+
+---
+
+## 📁 Structure du Projet
+
+```
+crispin-boutique/
+├── assets/              # Ressources
+│   └── logo.svg
+├── css/                 # Styles
+│   ├── style.css
+│   ├── cart-styles.css
+│   └── admin-styles.css
+├── js/                  # Scripts
+│   ├── config.js        # Configuration env
+│   ├── script.js        # Logique principale
+│   ├── cart.js          # Panier
+│   ├── ai-assistant.js  # Assistant IA
+│   ├── ai-learning.js   # Machine Learning
+│   └── admin.js         # Dashboard
+├── docs/                # Documentation
+│   ├── README.md
+│   └── GUIDE-DEPLOIEMENT.md
+├── server-data/         # Données backend (git ignored)
+│   ├── users.json
+│   ├── ai-conversations.json
+│   └── orders.json
+├── index.html           # Page d'accueil
+├── cart.html            # Panier
+├── login.html           # Authentification
+├── admin.html           # Dashboard
+├── server.js            # Backend Node.js/Express
+├── package.json         # Dépendances
+├── render.yaml          # Config Render.com
+└── .gitignore           # Fichiers ignorés
+```
+
+---
+
+## 🛠️ Technologies
+
+| Frontend | Backend | Outils |
+|----------|---------|--------|
+| HTML5, CSS3 | Node.js | Git |
+| JavaScript ES6+ | Express.js | GitHub Pages |
+| Canvas API | CORS | Render.com |
+| Chart.js | JSON Storage | npm |
+
+---
+
+## 📖 Utilisation
+
+### En Local
+
+1. **Lancer le backend**
+   ```bash
+   node server.js
+   ```
+   Serveur sur `http://localhost:4000`
+
+2. **Ouvrir le frontend**
+   - Ouvrir `index.html` dans votre navigateur
+   - Ou utiliser Live Server (VS Code)
+
+### En Production
+
+1. **Frontend** : GitHub Pages
+   - URL : `https://USERNAME.github.io/REPO/`
+
+2. **Backend** : Render.com
+   - URL : `https://VOTRE-APP.onrender.com`
+
+3. **Configuration** : `js/config.js` détecte automatiquement l'environnement
+
+---
+
+## 🔌 API Endpoints
+
+### Authentification
+- `POST /api/auth/register` - Créer un compte
+- `POST /api/auth/login` - Se connecter
+
+### Conversations IA
+- `POST /api/ai/conversation` - Sauvegarder
+- `GET /api/ai/conversations` - Liste complète
+- `GET /api/ai/analytics` - Statistiques
+
+### Commandes
+- `POST /api/orders` - Créer une commande
+- `GET /api/orders/user/:userId` - Par utilisateur
+- `PUT /api/orders/:orderId/status` - Mettre à jour
+
+---
+
+## 🤝 Contribuer
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Commit (`git commit -m 'Ajout fonctionnalité'`)
+4. Push (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrir une Pull Request
+
+---
+
+## 📝 Licence
+
+© 2025 Crispin Industrie - Tous droits réservés
+
+---
+
+## 📞 Contact
+
+- **Site Web** : [crispin-industrie.com](https://crispin-industrie.com)
+- **Email** : contact@crispin-industrie.com
+- **Téléphone** : +33 1 23 45 67 89
+
+---
+
+**60 ans d'expertise depuis 1963** | Livraison 24h | Stock permanent 1000+ références

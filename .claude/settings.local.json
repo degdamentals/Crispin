@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(start cart.html)",
+      "Bash(node -e:*)",
+      "Bash(start index.html)",
+      "Bash(start admin.html)",
+      "Bash(npm install:*)",
+      "Bash(node server.js:*)"
     ],
     "deny": [],
     "ask": []

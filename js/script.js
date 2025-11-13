@@ -281,7 +281,7 @@ function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.dataset.category = product.category;
-    card.style.cursor = 'pointer';
+    card.dataset.id = product.id;
 
     const badgeHTML = product.badge
         ? `<span class="product-badge">${product.badge}</span>`
@@ -303,16 +303,19 @@ function createProductCard(product) {
                     <span class="product-price">${product.price.toFixed(2)} €</span>
                     <span class="product-price-unit">${product.unit}</span>
                 </div>
-                <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">
+                <button class="add-to-cart" data-product-id="${product.id}">
                     Ajouter
                 </button>
             </div>
         </div>
     `;
 
-    // Clic sur la carte pour aller à la page produit
-    card.addEventListener('click', () => {
-        window.location.href = `product.html?id=${product.id}`;
+    // Attacher l'événement au bouton "Ajouter"
+    const addButton = card.querySelector('.add-to-cart');
+    addButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('🖱️ Clic sur bouton Ajouter, productId:', product.id);
+        addToCart(product.id);
     });
 
     return card;
@@ -364,19 +367,31 @@ function filterProducts(category) {
 // ===================================
 
 function addToCart(productId) {
+    console.log('🛒 addToCart appelé avec productId:', productId);
+
     const product = products.find(p => p.id === productId);
-    if (!product) return;
+    if (!product) {
+        console.error('❌ Produit non trouvé:', productId);
+        return;
+    }
+
+    console.log('✅ Produit trouvé:', product.name);
 
     const existingItem = cart.find(item => item.id === productId);
 
     if (existingItem) {
         existingItem.quantity++;
+        console.log('📦 Quantité augmentée:', existingItem.quantity);
     } else {
         cart.push({
-            ...product,
+            id: productId,
             quantity: 1
         });
+        console.log('➕ Nouveau produit ajouté au panier');
     }
+
+    console.log('🛒 Panier actuel:', cart);
+    console.log('📊 Total articles:', cart.reduce((sum, item) => sum + item.quantity, 0));
 
     updateCart();
     saveCart();
@@ -406,7 +421,15 @@ function updateQuantity(productId, change) {
 function updateCart() {
     // Mettre à jour le compteur
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById('cartCount').textContent = totalItems;
+    console.log('🔄 updateCart - Total articles:', totalItems);
+
+    const cartCountEl = document.getElementById('cartCount');
+    if (cartCountEl) {
+        cartCountEl.textContent = totalItems;
+        console.log('✅ Compteur mis à jour:', totalItems);
+    } else {
+        console.error('❌ Élément cartCount introuvable dans le DOM');
+    }
 
     // Mettre à jour le modal
     updateCartModal();
@@ -415,6 +438,11 @@ function updateCart() {
 function updateCartModal() {
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
+
+    // Si les éléments n'existent pas (ex: on n'est pas sur la page avec le modal), on sort
+    if (!cartItems || !cartTotal) {
+        return;
+    }
 
     if (cart.length === 0) {
         cartItems.innerHTML = '<p class="empty-cart">Votre panier est vide</p>';
@@ -426,7 +454,11 @@ function updateCartModal() {
     cartItems.innerHTML = '';
 
     cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
+        // Get full product data
+        const product = products.find(p => p.id === item.id);
+        if (!product) return;
+
+        const itemTotal = product.price * item.quantity;
         total += itemTotal;
 
         const cartItem = document.createElement('div');
@@ -434,19 +466,19 @@ function updateCartModal() {
         cartItem.innerHTML = `
             <div class="cart-item-image">
                 <div class="product-icon" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--primary);">
-                    ${getProductIcon(item.category)}
+                    ${getProductIcon(product.category)}
                 </div>
             </div>
             <div class="cart-item-info">
-                <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price">${item.price.toFixed(2)} € ${item.unit}</div>
+                <div class="cart-item-name">${product.name}</div>
+                <div class="cart-item-price">${product.price.toFixed(2)} € ${product.unit}</div>
                 <div class="cart-item-quantity">
-                    <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                    <button class="qty-btn" onclick="updateQuantity(${product.id}, -1)">-</button>
                     <span>${item.quantity}</span>
-                    <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                    <button class="qty-btn" onclick="updateQuantity(${product.id}, 1)">+</button>
                 </div>
             </div>
-            <button class="cart-item-remove" onclick="removeFromCart(${item.id})">✕</button>
+            <button class="cart-item-remove" onclick="removeFromCart(${product.id})">✕</button>
         `;
         cartItems.appendChild(cartItem);
     });
@@ -467,14 +499,20 @@ function showCartNotification() {
 // ===================================
 
 function saveCart() {
+    console.log('💾 Sauvegarde du panier:', cart);
     localStorage.setItem('crispinCart', JSON.stringify(cart));
+    console.log('✅ Panier sauvegardé dans localStorage');
 }
 
 function loadCart() {
+    console.log('📖 Chargement du panier depuis localStorage...');
     const savedCart = localStorage.getItem('crispinCart');
     if (savedCart) {
         cart = JSON.parse(savedCart);
+        console.log('✅ Panier chargé:', cart);
         updateCart();
+    } else {
+        console.log('ℹ️ Aucun panier sauvegardé trouvé');
     }
 }
 
@@ -489,7 +527,7 @@ function setupEventListeners() {
     const closeCart = document.getElementById('closeCart');
 
     cartBtn.addEventListener('click', () => {
-        cartModal.classList.add('active');
+        window.location.href = 'cart.html';
     });
 
     closeCart.addEventListener('click', () => {
@@ -830,7 +868,10 @@ function setupParticles() {
     canvas.height = window.innerHeight;
 
     const particles = [];
-    const particleCount = 50;
+    // Réduire le nombre de particules pour meilleures performances
+    const particleCount = 30; // 50 → 30
+    const maxDistance = 150;
+    const maxDistanceSquared = maxDistance * maxDistance; // Éviter sqrt()
 
     class Particle {
         constructor() {
@@ -861,28 +902,45 @@ function setupParticles() {
         particles.push(new Particle());
     }
 
+    let frame = 0;
     function animateParticles() {
+        // Limiter à 30 FPS pour meilleures performances
+        frame++;
+        if (frame % 2 !== 0) {
+            requestAnimationFrame(animateParticles);
+            return;
+        }
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        // Dessiner les particules
         particles.forEach(particle => {
             particle.update();
             particle.draw();
         });
 
-        // Dessiner les lignes entre particules proches
+        // Dessiner les lignes entre particules proches (optimisé)
+        // Limiter le nombre de connexions pour Edge/Firefox
         for (let i = 0; i < particles.length; i++) {
+            let connectionsCount = 0;
+            const maxConnections = 3; // Maximum 3 connexions par particule
+
             for (let j = i + 1; j < particles.length; j++) {
+                if (connectionsCount >= maxConnections) break;
+
                 const dx = particles[i].x - particles[j].x;
                 const dy = particles[i].y - particles[j].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+                const distanceSquared = dx * dx + dy * dy; // Éviter sqrt() coûteux
 
-                if (distance < 150) {
+                if (distanceSquared < maxDistanceSquared) {
+                    const distance = Math.sqrt(distanceSquared); // Calculer seulement si nécessaire
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
                     ctx.strokeStyle = `rgba(252, 76, 2, ${0.2 - distance / 750})`;
                     ctx.lineWidth = 1;
                     ctx.stroke();
+                    connectionsCount++;
                 }
             }
         }
@@ -892,9 +950,14 @@ function setupParticles() {
 
     animateParticles();
 
+    // Throttle resize event
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }, 250);
     });
 }
 
