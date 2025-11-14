@@ -1577,11 +1577,6 @@ body::before {
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
-
-    /* Ralentir l'animation du bandeau en mobile */
-    .announcement-content {
-        animation: scroll 120s linear infinite;
-    }
 }
 
 @media (max-width: 480px) {
@@ -3724,9 +3719,33 @@ body::before {
         }
     }
 
-    /* Simplify transitions */
-    * {
-        animation-duration: 0.2s !important;
+    /* Ralentir les animations en mobile pour une meilleure lisibilité */
+
+    /* Bandeau défilant plus lent */
+    .announcement-content {
+        animation-duration: 120s !important;
+    }
+
+    /* Autres animations importantes - garder durée raisonnable */
+    .hero-background .hero-grid {
+        animation-duration: 40s !important;
+    }
+
+    .floating-element {
+        animation-duration: 30s !important;
+    }
+
+    .product-card {
+        animation-duration: 12s !important;
+    }
+
+    /* AI pulse moins rapide */
+    .ai-btn {
+        animation-duration: 3s !important;
+    }
+
+    /* Transitions courtes pour réactivité */
+    button, a, input, select, textarea {
         transition-duration: 0.2s !important;
     }
 }
