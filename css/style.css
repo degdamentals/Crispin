@@ -3719,11 +3719,11 @@ body::before {
         }
     }
 
-    /* Ralentir les animations en mobile pour une meilleure lisibilité */
+    /* Ajuster les animations en mobile pour une meilleure lisibilité */
 
-    /* Bandeau défilant plus lent */
+    /* Bandeau défilant - vitesse optimale pour mobile */
     .announcement-content {
-        animation-duration: 120s !important;
+        animation-duration: 60s !important;
     }
 
     /* Autres animations importantes - garder durée raisonnable */
