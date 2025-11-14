@@ -205,14 +205,14 @@ class AIReasoningEngine {
     // Gather relevant knowledge for the question
     gatherKnowledge(understanding, productContext) {
         const knowledge = {
-            productInfo: productContext,
+            productInfo: productContext || { name: 'Assistant général', category: null },
             domainKnowledge: null,
             pastExperiences: [],
             relatedProducts: []
         };
 
         // Get domain knowledge for product category
-        if (productContext.category && this.knowledge.productTypes[productContext.category]) {
+        if (productContext && productContext.category && this.knowledge.productTypes[productContext.category]) {
             knowledge.domainKnowledge = this.knowledge.productTypes[productContext.category];
         }
 
@@ -220,7 +220,9 @@ class AIReasoningEngine {
         knowledge.pastExperiences = this.findSimilarConversations(understanding);
 
         // Find related products for comparison
-        knowledge.relatedProducts = this.findRelatedProducts(productContext);
+        if (productContext) {
+            knowledge.relatedProducts = this.findRelatedProducts(productContext);
+        }
 
         return knowledge;
     }
@@ -228,8 +230,8 @@ class AIReasoningEngine {
     // Analyze the current context
     analyzeContext(productContext, understanding) {
         return {
-            productCategory: productContext.category,
-            priceRange: this.categorizePriceRange(productContext.price),
+            productCategory: productContext ? productContext.category : null,
+            priceRange: productContext ? this.categorizePriceRange(productContext.price) : 'N/A',
             userIntent: understanding.intent,
             conversationHistory: this.memory.contextHistory.slice(-5),
             similarPastQuestions: this.findSimilarQuestions(understanding.normalized)
@@ -382,6 +384,12 @@ class AIReasoningEngine {
 
     // Generate comparison response
     generateComparisonResponse(product, chain) {
+        if (!product || !product.name) {
+            return `Pour comparer nos produits, j'ai besoin de savoir :\n\n` +
+                   `• Quels produits souhaitez-vous comparer ?\n` +
+                   `• Pour quel type d'utilisation ?\n\n` +
+                   `Par exemple : "Quelle différence entre vos colles néoprène et PU ?"`;
+        }
         return `Le **${product.name}** (${product.price.toFixed(2)}€ ${product.unit}) se distingue par ${product.description.toLowerCase()}. ${this.addContextualInfo(product)}`;
     }
 
@@ -403,6 +411,13 @@ class AIReasoningEngine {
 
     // Generate problem-solving response
     generateProblemSolvingResponse(product, chain) {
+        if (!product || !product.name) {
+            return `Je peux vous aider à résoudre votre problème. Pouvez-vous me donner plus de détails ?\n\n` +
+                   `• Quel produit utilisez-vous ?\n` +
+                   `• Quel est le problème rencontré ?\n` +
+                   `• Dans quelles conditions l'utilisez-vous ?\n\n` +
+                   `Avec ces informations, je pourrai vous proposer une solution.`;
+        }
         return `Pour résoudre votre problème avec **${product.name}**, voici mon analyse : ${product.description}. Je vous conseille de vérifier ${this.suggestTroubleshooting(product)}. Si le problème persiste, n'hésitez pas à demander plus de détails.`;
     }
 
@@ -431,12 +446,24 @@ class AIReasoningEngine {
 
     // Generate specifications response
     generateSpecificationsResponse(product, chain) {
+        if (!product || !product.name) {
+            return `Je peux vous fournir les spécifications de nos produits. De quel produit s'agit-il ?\n\n` +
+                   `Vous pouvez me demander des informations sur nos colles, teintures, renforts ou machines.`;
+        }
         return `**${product.name}** - Spécifications : ${product.description}. Prix : ${product.price.toFixed(2)}€ ${product.unit}. Catégorie : ${this.getCategoryDisplayName(product.category)}. ${this.addTechnicalDetails(product)}`;
     }
 
     // Generate general response
     generateGeneralResponse(product, chain, understanding) {
         const greeting = understanding.sentiment === 'concerned' ? 'Je comprends votre question.' : 'Excellente question !';
+        if (!product || !product.name) {
+            return `${greeting} Je suis l'assistant virtuel Crispin, spécialisé en maroquinerie.\n\n` +
+                   `Je peux vous aider avec :\n` +
+                   `• **Choix de produits** : colles, teintures, renforts\n` +
+                   `• **Conseils d'utilisation** : application, sécurité, finitions\n` +
+                   `• **Comparaison** : différences entre nos produits\n\n` +
+                   `Parlez-moi de votre projet !`;
+        }
         return `${greeting} Concernant **${product.name}** : ${product.description}. ${this.addHelpfulContext(product, understanding)}`;
     }
 

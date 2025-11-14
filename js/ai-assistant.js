@@ -451,7 +451,11 @@ function generateFallbackResponse(userMessage) {
 
     // Greetings
     if (lowerMessage.match(/^(salut|bonjour|hello|hi)/)) {
-        return `Bonjour ! Je suis votre assistant IA. Posez-moi vos questions sur **${currentProduct.name}**.`;
+        if (currentProduct) {
+            return `Bonjour ! Je suis votre assistant IA. Posez-moi vos questions sur **${currentProduct.name}**.`;
+        } else {
+            return `Bonjour ! Je suis votre assistant Crispin. Comment puis-je vous aider aujourd'hui ?`;
+        }
     }
 
     // Politeness
@@ -465,16 +469,28 @@ function generateFallbackResponse(userMessage) {
 
     // Price
     if (lowerMessage.includes('prix') || lowerMessage.includes('coût')) {
-        return `**${currentProduct.name}** coûte ${currentProduct.price.toFixed(2)}€ ${currentProduct.unit}.`;
+        if (currentProduct) {
+            return `**${currentProduct.name}** coûte ${currentProduct.price.toFixed(2)}€ ${currentProduct.unit}.`;
+        } else {
+            return `Je peux vous renseigner sur les prix de nos produits. De quel produit s'agit-il ? (colles, teintures, renforts...)`;
+        }
     }
 
     // Usage
     if (lowerMessage.includes('utiliser') || lowerMessage.includes('application')) {
-        return `**${currentProduct.name}** : ${currentProduct.description}. Un excellent choix pour vos besoins professionnels.`;
+        if (currentProduct) {
+            return `**${currentProduct.name}** : ${currentProduct.description}. Un excellent choix pour vos besoins professionnels.`;
+        } else {
+            return `Je peux vous expliquer comment utiliser nos produits. De quel type de produit s'agit-il ? (colle, teinture, renfort...)`;
+        }
     }
 
     // Default
-    return `Concernant **${currentProduct.name}** : ${currentProduct.description}. Prix: ${currentProduct.price.toFixed(2)}€ ${currentProduct.unit}. Que souhaitez-vous savoir de plus ?`;
+    if (currentProduct) {
+        return `Concernant **${currentProduct.name}** : ${currentProduct.description}. Prix: ${currentProduct.price.toFixed(2)}€ ${currentProduct.unit}. Que souhaitez-vous savoir de plus ?`;
+    } else {
+        return `Je suis là pour vous aider à choisir le bon produit Crispin. Parlez-moi de votre projet : quel type de travail maroquinerie voulez-vous réaliser ?`;
+    }
 }
 
 // Update suggestion buttons
