@@ -1580,7 +1580,7 @@ body::before {
 
     /* Ralentir l'animation du bandeau en mobile */
     .announcement-content {
-        animation: scroll 80s linear infinite;
+        animation: scroll 120s linear infinite;
     }
 }
 
