@@ -35,6 +35,17 @@
                         </svg>
                     </button>
 
+                    <!-- AI Assistant Button -->
+                    <button class="ai-btn" id="globalAIBtn" title="Assistant IA">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            <circle cx="9" cy="10" r="1" fill="currentColor"></circle>
+                            <circle cx="15" cy="10" r="1" fill="currentColor"></circle>
+                            <path d="M9 14a3 3 0 0 0 6 0"></path>
+                        </svg>
+                        <span class="ai-badge">IA</span>
+                    </button>
+
                     <!-- User Account Button -->
                     <div class="user-menu" id="userMenu">
                         <!-- Will be populated by JavaScript -->
@@ -712,8 +723,31 @@
     <script src="js/config.js"></script>
     <script src="js/user-menu.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/ai-web-search.js"></script>
     <script src="js/ai-reasoning.js"></script>
     <script src="js/ai-learning.js"></script>
     <script src="js/ai-assistant.js"></script>
+    <script>
+        // Setup global AI button
+        document.addEventListener('DOMContentLoaded', () => {
+            const globalAIBtn = document.getElementById('globalAIBtn');
+            if (globalAIBtn) {
+                globalAIBtn.addEventListener('click', () => {
+                    // Open AI assistant with general context
+                    const firstProduct = products && products.length > 0 ? products[0] : {
+                        id: 1,
+                        name: 'Assistant Crispin',
+                        category: 'colles',
+                        description: 'Votre assistant intelligent pour tous vos besoins',
+                        price: 0,
+                        unit: ''
+                    };
+                    if (typeof openAIAssistant === 'function') {
+                        openAIAssistant(firstProduct.id);
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

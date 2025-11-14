@@ -105,11 +105,26 @@ class AIReasoningEngine {
         const response = this.synthesizeResponse(reasoningChain, understanding, productContext);
         this.addReasoningStep('Response Synthesis', response);
 
-        // Step 6: Learn from this interaction
-        this.learn(question, response, productContext);
+        // Step 6: Enhance with web knowledge
+        let finalResponse = response.text;
+        if (typeof window.aiWebSearch !== 'undefined') {
+            finalResponse = await window.aiWebSearch.enhanceWithWebKnowledge(
+                question,
+                productContext,
+                response.text
+            );
+            this.addReasoningStep('Web Knowledge Enhancement', {
+                enhanced: true,
+                originalLength: response.text.length,
+                enhancedLength: finalResponse.length
+            });
+        }
+
+        // Step 7: Learn from this interaction
+        this.learn(question, { text: finalResponse, confidence: response.confidence }, productContext);
 
         return {
-            response: response.text,
+            response: finalResponse,
             confidence: response.confidence,
             reasoning: this.reasoningSteps,
             suggestions: this.generateFollowUpQuestions(understanding, productContext)
