@@ -1540,6 +1540,124 @@ body::before {
 }
 
 /* ===================================
+   TUTORIALS SECTION
+   =================================== */
+
+.tutorials-section {
+    padding: var(--spacing-xl) 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.section-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-top: var(--spacing-xs);
+}
+
+.tutorials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.tutorial-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.tutorial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.tutorial-video {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    background: var(--dark);
+}
+
+.tutorial-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.tutorial-content {
+    padding: var(--spacing-md);
+}
+
+.tutorial-content h3 {
+    font-size: 1.25rem;
+    color: var(--dark);
+    margin-bottom: var(--spacing-xs);
+}
+
+.tutorial-content p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-sm);
+}
+
+.tutorial-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.tutorial-duration {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.tutorial-duration svg {
+    stroke: var(--primary);
+}
+
+.tutorial-category {
+    background: var(--primary);
+    color: var(--white);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.tutorials-cta {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+}
+
+.tutorials-cta p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-md);
+}
+
+.tutorials-cta .btn {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ===================================
    RESPONSIVE
    =================================== */
 
@@ -1576,6 +1694,10 @@ body::before {
 
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .tutorials-grid {
+        grid-template-columns: 1fr;
     }
 }
 
