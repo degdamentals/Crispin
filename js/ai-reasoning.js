@@ -387,7 +387,18 @@ class AIReasoningEngine {
 
     // Generate recommendation response
     generateRecommendationResponse(product, chain) {
-        return `Je vous recommande le **${product.name}** car ${product.description.toLowerCase()}. C'est un excellent choix pour ${this.inferUseCase(product)}. ${this.addValueProposition(product)}`;
+        // Suivre les instructions Crispin : poser des questions avant de recommander
+        if (!product) {
+            return `Pour vous conseiller au mieux, j'ai besoin de quelques précisions :\n\n` +
+                   `• Quel type de projet maroquinerie avez-vous ?\n` +
+                   `• Quels matériaux allez-vous utiliser ? (cuir, simili, tissu, etc.)\n` +
+                   `• Quelles sont vos contraintes ? (flexibilité, résistance, finition, etc.)\n\n` +
+                   `Avec ces informations, je pourrai vous recommander le produit le plus adapté à vos besoins.`;
+        }
+        return `**${product.name}** pourrait vous convenir car ${product.description.toLowerCase()}. ` +
+               `C'est particulièrement adapté pour ${this.inferUseCase(product)}.\n\n` +
+               `💡 **Points forts** : ${this.addValueProposition(product)}\n\n` +
+               `Avez-vous besoin de précisions sur son utilisation ?`;
     }
 
     // Generate problem-solving response
@@ -397,9 +408,25 @@ class AIReasoningEngine {
 
     // Generate usage response
     generateUsageResponse(product, chain) {
+        if (!product) {
+            return `Je peux vous aider à utiliser nos produits ! De quel type de produit s'agit-il ?\n\n` +
+                   `• **Colle** : Je vous expliquerai la préparation, l'application et le séchage\n` +
+                   `• **Teinture** : Je vous guiderai sur la préparation du cuir et l'application\n` +
+                   `• **Renfort** : Je vous conseillerai sur la découpe et la pose\n\n` +
+                   `Précisez le produit pour des conseils détaillés.`;
+        }
         const domain = this.knowledge.productTypes[product.category];
         const considerations = domain ? domain.considerations.join(', ') : 'les conditions d\'application';
-        return `Pour utiliser **${product.name}** correctement : ${product.description}. Pensez à considérer ${considerations}. ${this.addUsageTips(product)}`;
+
+        let safetyReminder = '';
+        if (product.category === 'colles' || product.category === 'teintures') {
+            safetyReminder = `\n\n⚠️ **Sécurité** :\n• Travaillez dans un endroit ventilé\n• Évitez le contact avec la peau et les yeux\n• Respectez les temps de séchage`;
+        }
+
+        return `**Mode d'emploi pour ${product.name}** :\n\n` +
+               `${product.description}\n\n` +
+               `📝 **À considérer** : ${considerations}.\n\n` +
+               `${this.addUsageTips(product)}${safetyReminder}`;
     }
 
     // Generate specifications response

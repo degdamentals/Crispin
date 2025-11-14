@@ -210,7 +210,8 @@ function addMessage(sender, text, userQuestion = null) {
 
     if (sender === 'assistant' && userQuestion) {
         // Record exchange in learning system
-        aiLearning.recordExchange(userQuestion, text, currentProduct.id);
+        const productId = currentProduct ? currentProduct.id : 'general';
+        aiLearning.recordExchange(userQuestion, text, productId);
         currentExchangeIndex++;
     }
 }
@@ -248,7 +249,7 @@ async function sendMessage() {
     const input = document.getElementById('aiInput');
     const message = input.value.trim();
 
-    if (!message || !currentProduct) return;
+    if (!message) return; // Permettre l'envoi même sans produit (mode général)
 
     // Add user message
     addMessage('user', message);
@@ -269,8 +270,11 @@ async function sendMessage() {
 
         // Use improved response from learning system if available
         let finalResponse = response;
-        if (typeof aiLearning !== 'undefined') {
+        if (typeof aiLearning !== 'undefined' && currentProduct) {
             finalResponse = aiLearning.getImprovedResponse(userQuestion, response, currentProduct.id);
+        } else if (typeof aiLearning !== 'undefined') {
+            // Mode général - utiliser ID générique
+            finalResponse = aiLearning.getImprovedResponse(userQuestion, response, 'general');
         }
 
         addMessage('assistant', finalResponse, userQuestion);
