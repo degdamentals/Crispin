@@ -104,31 +104,49 @@ function addAIButtonsToProducts() {
     });
 }
 
-// Open AI Assistant for a product
-function openAIAssistant(productId) {
-    currentProduct = products.find(p => p.id === productId);
-    if (!currentProduct) return;
+// Open AI Assistant for a product or general mode
+function openAIAssistant(productId = null) {
+    if (productId) {
+        currentProduct = products.find(p => p.id === productId);
+    } else {
+        currentProduct = null; // Mode général
+    }
 
     chatMessages = [];
     currentExchangeIndex = 0;
     aiLearning.startConversation();
 
-    // Update product info
-    const productInfoEl = document.getElementById('aiProductInfo');
-    productInfoEl.innerHTML = `
-        <div class="ai-product-image"></div>
-        <div class="ai-product-details">
-            <h4>${currentProduct.name}</h4>
-            <p>${currentProduct.price.toFixed(2)} € ${currentProduct.unit}</p>
-        </div>
-    `;
-
-    // Clear chat
+    // Clear chat first
     const chatEl = document.getElementById('aiChat');
     chatEl.innerHTML = '';
 
-    // Add welcome message
-    addMessage('assistant', `Bonjour ! Je suis là pour répondre à vos questions sur ${currentProduct.name}. Comment puis-je vous aider ?`);
+    // Update product info or header for general mode
+    const productInfoEl = document.getElementById('aiProductInfo');
+    const headerText = document.querySelector('.ai-header-text');
+
+    if (currentProduct) {
+        // Mode produit spécifique
+        productInfoEl.innerHTML = `
+            <div class="ai-product-image"></div>
+            <div class="ai-product-details">
+                <h4>${currentProduct.name}</h4>
+                <p>${currentProduct.price.toFixed(2)} € ${currentProduct.unit}</p>
+            </div>
+        `;
+        headerText.innerHTML = `
+            <h3>Assistant Produit</h3>
+            <p>Posez vos questions sur ce produit</p>
+        `;
+        addMessage('assistant', `Bonjour ! Je suis là pour répondre à vos questions sur ${currentProduct.name}. Comment puis-je vous aider ?`);
+    } else {
+        // Mode général
+        productInfoEl.innerHTML = '';
+        headerText.innerHTML = `
+            <h3>Assistant Crispin</h3>
+            <p>Posez vos questions sur nos produits</p>
+        `;
+        addMessage('assistant', `Bonjour ! Je suis votre assistant Crispin. Je peux vous aider à choisir le bon produit, répondre à vos questions techniques ou vous conseiller sur l'utilisation de nos colles, teintures et renforts. Comment puis-je vous aider ?`);
+    }
 
     // Show modal
     document.getElementById('aiModal').classList.add('active');

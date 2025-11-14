@@ -733,17 +733,9 @@
             const globalAIBtn = document.getElementById('globalAIBtn');
             if (globalAIBtn) {
                 globalAIBtn.addEventListener('click', () => {
-                    // Open AI assistant with general context
-                    const firstProduct = products && products.length > 0 ? products[0] : {
-                        id: 1,
-                        name: 'Assistant Crispin',
-                        category: 'colles',
-                        description: 'Votre assistant intelligent pour tous vos besoins',
-                        price: 0,
-                        unit: ''
-                    };
+                    // Open AI assistant in general mode (no specific product)
                     if (typeof openAIAssistant === 'function') {
-                        openAIAssistant(firstProduct.id);
+                        openAIAssistant(); // No productId = mode général
                     }
                 });
             }
